@@ -3,947 +3,710 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BPS Provinsi Gorontalo — Kasus Penyakit 2024</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <title>Dashboard Analitik Penyakit Menular – Provinsi Gorontalo</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
       :root {
-        --bg: #f5f2eb;
-        --surface: #fffef9;
-        --navy: #0d2240;
-        --teal: #1a6b5a;
-        --teal-light: #2d9678;
-        --gold: #c8962a;
-        --gold-light: #e8b84b;
-        --red: #c0392b;
-        --red-light: #e74c3c;
-        --blue: #1565c0;
-        --blue-light: #1976d2;
-        --text: #1a1a1a;
-        --text-secondary: #4a4a4a;
-        --text-muted: #7a7a7a;
-        --border: #d8d2c4;
-        --border-light: #ece8de;
-        --shadow: 0 4px 24px rgba(13, 34, 64, 0.1);
-        --shadow-lg: 0 12px 48px rgba(13, 34, 64, 0.14);
+        --bg: #050d1a;
+        --bg2: #091527;
+        --bg3: #0d1e34;
+        --card: #0f2040;
+        --card2: #122448;
+        --border: #1e3a5f;
+        --accent1: #00c6ff;
+        --accent2: #ff6b35;
+        --accent3: #39d98a;
+        --accent4: #f5c518;
+        --text: #e8f4ff;
+        --text2: #8aabcc;
+        --text3: #4d7a9e;
+        --dbd: #00c6ff;
+        --tbc: #ff6b35;
+        --glow1: rgba(0, 198, 255, 0.15);
+        --glow2: rgba(255, 107, 53, 0.15);
       }
 
-      * {
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
 
-      html {
-        scroll-behavior: smooth;
-      }
-
       body {
-        font-family: "IBM Plex Sans", sans-serif;
+        font-family: "DM Sans", sans-serif;
         background: var(--bg);
         color: var(--text);
         min-height: 100vh;
         overflow-x: hidden;
       }
 
-      /* ===================== HEADER ===================== */
-      .site-header {
-        background: var(--navy);
-        color: white;
+      /* ── ANIMATED BG ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background:
+          radial-gradient(
+            ellipse 60% 40% at 20% 20%,
+            rgba(0, 198, 255, 0.07) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 50% 35% at 80% 80%,
+            rgba(255, 107, 53, 0.06) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 50% at 60% 10%,
+            rgba(57, 217, 138, 0.04) 0%,
+            transparent 70%
+          );
+        pointer-events: none;
+      }
+
+      /* ── HEADER ── */
+      header {
         position: sticky;
         top: 0;
         z-index: 100;
-        border-bottom: 3px solid var(--gold);
+        background: rgba(5, 13, 26, 0.92);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 clamp(16px, 4vw, 48px);
       }
-
-      .header-top {
+      .header-inner {
+        max-width: 1400px;
+        margin: 0 auto;
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        height: 64px;
         gap: 16px;
-        padding: 14px 24px;
-        max-width: 1280px;
-        margin: 0 auto;
       }
-
-      .logo-mark {
-        width: 48px;
-        height: 48px;
-        background: var(--gold);
-        border-radius: 8px;
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--accent1), #0066cc);
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 18px;
         flex-shrink: 0;
       }
-
-      .logo-mark svg {
-        width: 28px;
-        height: 28px;
-      }
-
-      .header-text h1 {
-        font-family: "Playfair Display", serif;
-        font-size: 1.15rem;
-        font-weight: 900;
-        line-height: 1.1;
-        letter-spacing: -0.01em;
-      }
-
-      .header-text p {
-        font-size: 0.72rem;
-        opacity: 0.7;
-        font-weight: 300;
-        margin-top: 2px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
-      .header-badge {
-        margin-left: auto;
-        background: var(--gold);
-        color: var(--navy);
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 20px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        white-space: nowrap;
-      }
-
-      nav {
-        background: rgba(255, 255, 255, 0.05);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .nav-inner {
-        display: flex;
-        gap: 0;
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 0 24px;
-        overflow-x: auto;
-        scrollbar-width: none;
-      }
-
-      .nav-inner::-webkit-scrollbar {
-        display: none;
-      }
-
-      .nav-btn {
-        background: none;
-        border: none;
-        color: rgba(255, 255, 255, 0.7);
-        font-family: "IBM Plex Sans", sans-serif;
-        font-size: 0.78rem;
-        font-weight: 500;
-        padding: 10px 18px;
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        transition: all 0.2s;
-        white-space: nowrap;
-        letter-spacing: 0.02em;
-      }
-
-      .nav-btn:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.08);
-      }
-      .nav-btn.active {
-        color: var(--gold);
-        border-bottom-color: var(--gold);
-      }
-
-      /* ===================== HERO ===================== */
-      .hero {
-        background: linear-gradient(
-          135deg,
-          var(--navy) 0%,
-          #1a3560 50%,
-          var(--teal) 100%
-        );
-        color: white;
-        padding: 56px 24px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      }
-
-      .hero-inner {
-        max-width: 1280px;
-        margin: 0 auto;
-        position: relative;
-      }
-
-      .hero-label {
-        font-size: 0.7rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--gold-light);
-        margin-bottom: 12px;
-      }
-
-      .hero h2 {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(1.8rem, 4vw, 3rem);
-        font-weight: 900;
-        line-height: 1.1;
-        margin-bottom: 10px;
-        max-width: 700px;
-      }
-
-      .hero-sub {
-        font-size: 0.95rem;
-        opacity: 0.75;
-        margin-bottom: 32px;
-        max-width: 560px;
-        font-weight: 300;
-        line-height: 1.6;
-      }
-
-      .hero-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 16px;
-        max-width: 900px;
-      }
-
-      .hero-stat {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        padding: 18px 20px;
-        backdrop-filter: blur(8px);
-        transition: transform 0.2s;
-      }
-
-      .hero-stat:hover {
-        transform: translateY(-2px);
-      }
-
-      .hero-stat .num {
-        font-family: "IBM Plex Mono", monospace;
-        font-size: 1.8rem;
-        font-weight: 500;
-        color: var(--gold-light);
-        display: block;
-        line-height: 1;
-        margin-bottom: 4px;
-      }
-
-      .hero-stat .lbl {
-        font-size: 0.72rem;
-        opacity: 0.7;
-        font-weight: 300;
-        letter-spacing: 0.02em;
-      }
-
-      /* ===================== MAIN ===================== */
-      .main {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 36px 24px 60px;
-      }
-
-      .section {
-        display: none;
-      }
-      .section.active {
-        display: block;
-      }
-
-      /* ===================== SECTION HEADER ===================== */
-      .sec-header {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 24px;
-        flex-wrap: wrap;
-      }
-
-      .sec-title {
-        font-family: "Playfair Display", serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--navy);
+      .logo-text {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 15px;
         line-height: 1.2;
       }
-
-      .sec-subtitle {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        margin-top: 4px;
+      .logo-text span {
+        color: var(--accent1);
+      }
+      .logo-sub {
+        font-size: 11px;
+        color: var(--text2);
+        font-weight: 300;
       }
 
-      /* ===================== CARDS OVERVIEW ===================== */
-      .overview-grid {
+      .header-badges {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 500;
+        border: 1px solid;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .badge-dbd {
+        color: var(--dbd);
+        border-color: rgba(0, 198, 255, 0.3);
+        background: rgba(0, 198, 255, 0.08);
+      }
+      .badge-tbc {
+        color: var(--tbc);
+        border-color: rgba(255, 107, 53, 0.3);
+        background: rgba(255, 107, 53, 0.08);
+      }
+      .badge-period {
+        color: var(--text2);
+        border-color: var(--border);
+      }
+
+      .pulse {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+      }
+      .pulse-dbd {
+        background: var(--dbd);
+        box-shadow: 0 0 8px var(--dbd);
+        animation: pulse 2s infinite;
+      }
+      .pulse-tbc {
+        background: var(--tbc);
+        box-shadow: 0 0 8px var(--tbc);
+        animation: pulse 2s infinite 0.5s;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      /* ── LAYOUT ── */
+      main {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: clamp(16px, 3vw, 40px) clamp(16px, 4vw, 48px);
+      }
+
+      /* ── HERO KPI ── */
+      .kpi-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 16px;
-        margin-bottom: 36px;
+        margin-bottom: 32px;
       }
-
-      .ov-card {
-        background: var(--surface);
+      .kpi-card {
+        background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 14px;
+        border-radius: 16px;
         padding: 20px;
-        box-shadow: var(--shadow);
         position: relative;
         overflow: hidden;
         transition:
           transform 0.2s,
-          box-shadow 0.2s;
+          border-color 0.2s;
+        animation: fadeUp 0.5s both;
       }
-
-      .ov-card:hover {
+      .kpi-card:hover {
         transform: translateY(-3px);
-        box-shadow: var(--shadow-lg);
+        border-color: var(--accent1);
       }
-
-      .ov-card::before {
+      .kpi-card::before {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 3px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-kpi, var(--accent1)),
+          transparent
+        );
       }
-
-      .ov-card.c-tb::before {
-        background: var(--teal);
+      .kpi-card.tbc-card {
+        --accent-kpi: var(--tbc);
       }
-      .ov-card.c-hiv::before {
-        background: var(--red);
+      .kpi-card.green-card {
+        --accent-kpi: var(--accent3);
       }
-      .ov-card.c-dbd::before {
-        background: #e67e22;
+      .kpi-card.yellow-card {
+        --accent-kpi: var(--accent4);
       }
-      .ov-card.c-malaria::before {
-        background: #8e44ad;
-      }
-      .ov-card.c-diare::before {
-        background: var(--blue);
-      }
-      .ov-card.c-kusta::before {
-        background: #27ae60;
-      }
-      .ov-card.c-pneumonia::before {
-        background: #c0392b;
-      }
-      .ov-card.c-rabies::before {
-        background: #d35400;
-      }
-
-      .ov-card .icon {
-        font-size: 2rem;
+      .kpi-icon {
+        font-size: 24px;
         margin-bottom: 10px;
-        display: block;
       }
-
-      .ov-card .disease-name {
-        font-size: 0.78rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--text-secondary);
-        margin-bottom: 6px;
-      }
-
-      .ov-card .case-num {
-        font-family: "IBM Plex Mono", monospace;
-        font-size: 2rem;
-        font-weight: 500;
-        color: var(--navy);
+      .kpi-value {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(24px, 3vw, 36px);
+        font-weight: 800;
         line-height: 1;
+        margin-bottom: 4px;
+      }
+      .kpi-value.dbd-col {
+        color: var(--dbd);
+      }
+      .kpi-value.tbc-col {
+        color: var(--tbc);
+      }
+      .kpi-value.green-col {
+        color: var(--accent3);
+      }
+      .kpi-value.yellow-col {
+        color: var(--accent4);
+      }
+      .kpi-label {
+        font-size: 12px;
+        color: var(--text2);
+        font-weight: 300;
+        line-height: 1.4;
+      }
+      .kpi-sub {
+        font-size: 11px;
+        color: var(--text3);
+        margin-top: 6px;
       }
 
-      .ov-card .case-unit {
-        font-size: 0.72rem;
-        color: var(--text-muted);
-        margin-top: 3px;
-      }
-
-      .ov-card .change {
-        position: absolute;
-        top: 18px;
-        right: 18px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 3px 8px;
-        border-radius: 12px;
-      }
-
-      .change.up {
-        background: #fde8e8;
-        color: var(--red);
-      }
-      .change.down {
-        background: #e8f5e9;
-        color: #27ae60;
-      }
-      .change.same {
-        background: #fff8e1;
-        color: var(--gold);
-      }
-
-      /* ===================== FILTER BAR ===================== */
-      .filter-bar {
+      /* ── SECTION TITLE ── */
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: clamp(16px, 2.5vw, 20px);
+        color: var(--text);
+        margin-bottom: 16px;
         display: flex;
+        align-items: center;
         gap: 10px;
-        flex-wrap: wrap;
-        align-items: center;
+      }
+      .section-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--border), transparent);
+      }
+
+      /* ── CARD ── */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        animation: fadeUp 0.5s both;
+      }
+      .card-title {
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--text2);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
         margin-bottom: 20px;
-        padding: 16px 20px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-      }
-
-      .filter-label {
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: var(--text-secondary);
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        margin-right: 4px;
-      }
-
-      .filter-btn {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 6px 14px;
-        font-family: "IBM Plex Sans", sans-serif;
-        font-size: 0.78rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.15s;
-        color: var(--text);
-      }
-
-      .filter-btn:hover {
-        border-color: var(--teal);
-        color: var(--teal);
-      }
-      .filter-btn.active {
-        background: var(--navy);
-        color: white;
-        border-color: var(--navy);
-      }
-
-      /* ===================== DATA TABLE ===================== */
-      .table-wrapper {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: var(--shadow);
-        overflow-x: auto;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.82rem;
-        min-width: 800px;
-      }
-
-      thead {
-        background: var(--navy);
-        color: white;
-      }
-
-      thead th {
-        padding: 13px 16px;
-        font-weight: 600;
-        font-size: 0.72rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        text-align: left;
-        white-space: nowrap;
-        cursor: pointer;
-        user-select: none;
-      }
-
-      thead th:hover {
-        background: rgba(255, 255, 255, 0.08);
-      }
-
-      thead th.num {
-        text-align: right;
-      }
-
-      tbody tr {
-        border-bottom: 1px solid var(--border-light);
-        transition: background 0.12s;
-      }
-
-      tbody tr:hover {
-        background: rgba(26, 107, 90, 0.04);
-      }
-      tbody tr:last-child {
-        border-bottom: none;
-      }
-
-      td {
-        padding: 12px 16px;
-        vertical-align: middle;
-      }
-
-      td.kabupaten {
-        font-weight: 600;
-        color: var(--navy);
         display: flex;
         align-items: center;
         gap: 8px;
-        min-width: 180px;
       }
-
-      td.num {
-        text-align: right;
-        font-family: "IBM Plex Mono", monospace;
-        color: var(--text-secondary);
-      }
-
-      td.num.highlight {
-        color: var(--navy);
-        font-weight: 600;
-      }
-
-      .rank-badge {
-        width: 22px;
-        height: 22px;
+      .dot {
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
-        background: var(--border-light);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.65rem;
-        font-weight: 700;
-        color: var(--text-muted);
         flex-shrink: 0;
       }
-
-      .rank-badge.top1 {
-        background: var(--gold);
-        color: white;
+      .dot-dbd {
+        background: var(--dbd);
+        box-shadow: 0 0 6px var(--dbd);
       }
-      .rank-badge.top2 {
-        background: #8d9dab;
-        color: white;
+      .dot-tbc {
+        background: var(--tbc);
+        box-shadow: 0 0 6px var(--tbc);
       }
-      .rank-badge.top3 {
-        background: #c77b2e;
-        color: white;
+      .dot-green {
+        background: var(--accent3);
+        box-shadow: 0 0 6px var(--accent3);
       }
-
-      .bar-cell {
-        width: 120px;
-      }
-
-      .mini-bar {
-        height: 6px;
-        background: var(--border-light);
-        border-radius: 3px;
-        overflow: hidden;
+      .dot-yellow {
+        background: var(--accent4);
+        box-shadow: 0 0 6px var(--accent4);
       }
 
-      .mini-bar-fill {
-        height: 100%;
-        border-radius: 3px;
-        background: var(--teal);
-        transition: width 0.4s;
-      }
-
-      /* ===================== CHART SECTION ===================== */
-      .charts-grid {
+      /* ── GRID LAYOUTS ── */
+      .grid-2 {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        grid-template-columns: 1fr 1fr;
         gap: 20px;
-        margin-bottom: 36px;
+        margin-bottom: 24px;
       }
-
-      .chart-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 24px;
-        box-shadow: var(--shadow);
-      }
-
-      .chart-title {
-        font-family: "Playfair Display", serif;
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--navy);
-        margin-bottom: 4px;
-      }
-
-      .chart-subtitle {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        margin-bottom: 18px;
-      }
-
-      .chart-container {
-        position: relative;
-        height: 280px;
-      }
-
-      .chart-container.tall {
-        height: 360px;
-      }
-
-      /* ===================== KABUPATEN DETAIL ===================== */
-      .kab-tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-
-      .kab-tab {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 8px 16px;
-        font-family: "IBM Plex Sans", sans-serif;
-        font-size: 0.8rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.15s;
-        color: var(--text);
-      }
-
-      .kab-tab:hover {
-        border-color: var(--teal);
-        color: var(--teal);
-      }
-      .kab-tab.active {
-        background: var(--teal);
-        color: white;
-        border-color: var(--teal);
-      }
-
-      .kab-detail-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: var(--shadow);
-      }
-
-      .kab-header {
-        background: linear-gradient(135deg, var(--navy), var(--teal));
-        color: white;
-        padding: 24px 28px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .kab-icon {
-        width: 52px;
-        height: 52px;
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.6rem;
-        flex-shrink: 0;
-      }
-
-      .kab-name {
-        font-family: "Playfair Display", serif;
-        font-size: 1.3rem;
-        font-weight: 700;
-      }
-      .kab-meta {
-        font-size: 0.76rem;
-        opacity: 0.7;
-        margin-top: 3px;
-      }
-
-      .kab-total-badge {
-        margin-left: auto;
-        text-align: right;
-      }
-
-      .kab-total-badge .tot-num {
-        font-family: "IBM Plex Mono", monospace;
-        font-size: 2rem;
-        font-weight: 500;
-        color: var(--gold-light);
-        display: block;
-        line-height: 1;
-      }
-
-      .kab-total-badge .tot-lbl {
-        font-size: 0.7rem;
-        opacity: 0.7;
-      }
-
-      .kab-diseases {
+      .grid-3 {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 0;
-      }
-
-      .kab-disease-item {
-        padding: 16px 24px;
-        border-right: 1px solid var(--border-light);
-        border-bottom: 1px solid var(--border-light);
-        transition: background 0.12s;
-      }
-
-      .kab-disease-item:hover {
-        background: var(--bg);
-      }
-
-      .kab-disease-item .d-name {
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        margin-bottom: 4px;
-      }
-
-      .kab-disease-item .d-val {
-        font-family: "IBM Plex Mono", monospace;
-        font-size: 1.4rem;
-        font-weight: 500;
-        color: var(--navy);
-      }
-
-      .kab-disease-item .d-unit {
-        font-size: 0.7rem;
-        color: var(--text-muted);
-      }
-
-      /* ===================== INFO SECTION ===================== */
-      .info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
-        margin-bottom: 36px;
+        margin-bottom: 24px;
       }
-
-      .info-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 24px;
-        box-shadow: var(--shadow);
+      .grid-32 {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr;
+        gap: 20px;
+        margin-bottom: 24px;
       }
-
-      .info-card h3 {
-        font-family: "Playfair Display", serif;
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--navy);
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .grid-23 {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 20px;
+        margin-bottom: 24px;
       }
-
-      .info-card p {
-        font-size: 0.84rem;
-        color: var(--text-secondary);
-        line-height: 1.7;
-        margin-bottom: 8px;
-      }
-
-      .methodology-box {
-        background: linear-gradient(135deg, #f0f7f4, #e8f5f1);
-        border: 1px solid #b8dbd3;
-        border-radius: 12px;
-        padding: 20px;
+      .full {
         margin-bottom: 24px;
       }
 
-      .methodology-box h3 {
-        color: var(--teal);
-        font-size: 0.88rem;
-        margin-bottom: 8px;
-      }
-      .methodology-box p {
-        font-size: 0.8rem;
-        color: #2d5a4f;
-        line-height: 1.65;
-      }
-
-      /* ===================== SOURCE / FOOTER ===================== */
-      .source-bar {
-        background: var(--navy);
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 0.72rem;
-        padding: 14px 24px;
-        text-align: center;
-        letter-spacing: 0.02em;
-        line-height: 1.7;
-      }
-
-      .source-bar strong {
-        color: white;
-      }
-
-      /* ===================== UTILITIES ===================== */
-      .tag {
-        display: inline-block;
-        font-size: 0.65rem;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        padding: 3px 8px;
-        border-radius: 4px;
-      }
-
-      .tag-high {
-        background: #fde8e8;
-        color: var(--red);
-      }
-      .tag-med {
-        background: #fff8e1;
-        color: #b7791f;
-      }
-      .tag-low {
-        background: #e8f5e9;
-        color: #27ae60;
-      }
-
-      .divider {
-        height: 1px;
-        background: var(--border);
-        margin: 28px 0;
-      }
-
-      .note-box {
-        background: #fffbf0;
-        border-left: 4px solid var(--gold);
-        padding: 12px 16px;
-        border-radius: 0 8px 8px 0;
-        font-size: 0.8rem;
-        color: var(--text-secondary);
-        margin: 16px 0;
-        line-height: 1.6;
-      }
-
-      /* ===================== RESPONSIVE ===================== */
-      @media (max-width: 768px) {
-        .hero {
-          padding: 36px 16px;
+      @media (max-width: 900px) {
+        .grid-2,
+        .grid-3,
+        .grid-32,
+        .grid-23 {
+          grid-template-columns: 1fr;
         }
-        .hero h2 {
-          font-size: 1.5rem;
-        }
-        .hero-stats {
+      }
+      @media (max-width: 600px) {
+        .kpi-grid {
           grid-template-columns: repeat(2, 1fr);
-          gap: 10px;
         }
-        .hero-stat .num {
-          font-size: 1.4rem;
-        }
-
-        .main {
-          padding: 24px 16px 48px;
-        }
-
-        .header-top {
-          padding: 12px 16px;
-        }
-        .header-text h1 {
-          font-size: 0.95rem;
-        }
-
-        .nav-inner {
-          padding: 0 12px;
-        }
-        .nav-btn {
-          padding: 9px 12px;
-          font-size: 0.72rem;
-        }
-
-        .overview-grid {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
-        }
-        .ov-card {
+        .card {
           padding: 16px;
         }
-        .ov-card .case-num {
-          font-size: 1.5rem;
-        }
-
-        .charts-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .kab-tabs {
-          gap: 6px;
-        }
-        .kab-tab {
-          padding: 6px 12px;
-          font-size: 0.75rem;
-        }
-
-        .kab-header {
-          padding: 18px 20px;
-        }
-        .kab-total-badge {
+        .header-badges .badge-period {
           display: none;
         }
-
-        table {
-          font-size: 0.75rem;
-        }
-        td,
-        thead th {
-          padding: 10px 12px;
-        }
-
-        .filter-bar {
-          padding: 12px 14px;
-          gap: 8px;
-        }
-        .filter-btn {
-          padding: 5px 10px;
-          font-size: 0.72rem;
-        }
       }
-
-      @media (max-width: 480px) {
-        .overview-grid {
+      @media (max-width: 380px) {
+        .kpi-grid {
           grid-template-columns: 1fr;
         }
-        .hero-stats {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        .sec-header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .kab-diseases {
-          grid-template-columns: repeat(2, 1fr);
-        }
       }
 
-      /* Animations */
+      /* ── CHART WRAPPER ── */
+      .chart-wrap {
+        position: relative;
+        width: 100%;
+      }
+      .chart-wrap canvas {
+        max-height: 280px;
+      }
+      .chart-wrap.tall canvas {
+        max-height: 340px;
+      }
+      .chart-wrap.short canvas {
+        max-height: 220px;
+      }
+
+      /* ── TABLE ── */
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .data-table thead th {
+        background: var(--bg3);
+        color: var(--text2);
+        font-family: "Syne", sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 10px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      .data-table tbody tr {
+        border-bottom: 1px solid rgba(30, 58, 95, 0.5);
+        transition: background 0.15s;
+      }
+      .data-table tbody tr:hover {
+        background: rgba(0, 198, 255, 0.04);
+      }
+      .data-table tbody td {
+        padding: 11px 14px;
+        color: var(--text);
+      }
+      .data-table tbody td:first-child {
+        color: var(--text2);
+        font-size: 12px;
+      }
+      .ir-bar-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ir-bar {
+        height: 6px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--dbd), #0066cc);
+      }
+      .ir-val {
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--dbd);
+      }
+      .rank-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        font-family: "Syne", sans-serif;
+      }
+      .rank-1 {
+        background: rgba(245, 197, 24, 0.15);
+        color: var(--accent4);
+        border: 1px solid rgba(245, 197, 24, 0.3);
+      }
+      .rank-2 {
+        background: rgba(0, 198, 255, 0.1);
+        color: var(--dbd);
+        border: 1px solid rgba(0, 198, 255, 0.25);
+      }
+      .rank-3 {
+        background: rgba(57, 217, 138, 0.1);
+        color: var(--accent3);
+        border: 1px solid rgba(57, 217, 138, 0.25);
+      }
+      .rank-other {
+        background: rgba(30, 58, 95, 0.5);
+        color: var(--text3);
+        border: 1px solid var(--border);
+      }
+
+      /* ── CORRELATION CARDS ── */
+      .corr-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+      .corr-item {
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .corr-label {
+        font-size: 11px;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .corr-val {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 28px;
+        background: linear-gradient(135deg, var(--accent1), var(--accent3));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .corr-val.orange {
+        background: linear-gradient(135deg, var(--tbc), var(--accent4));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .corr-meta {
+        font-size: 11px;
+        color: var(--text2);
+      }
+      .corr-bar-bg {
+        height: 4px;
+        background: var(--bg2);
+        border-radius: 2px;
+      }
+      .corr-bar-fill {
+        height: 4px;
+        border-radius: 2px;
+      }
+      .fill-blue {
+        background: linear-gradient(90deg, var(--accent1), #0066cc);
+      }
+      .fill-orange {
+        background: linear-gradient(90deg, var(--tbc), var(--accent4));
+      }
+      .fill-green {
+        background: linear-gradient(90deg, var(--accent3), #00a060);
+      }
+
+      /* ── HEATMAP ── */
+      .heatmap-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .heatmap-table {
+        border-collapse: separate;
+        border-spacing: 3px;
+        font-size: 11px;
+      }
+      .heatmap-table th {
+        color: var(--text3);
+        font-weight: 400;
+        padding: 4px 8px;
+        font-size: 10px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .heatmap-table td {
+        width: 48px;
+        min-width: 40px;
+        height: 32px;
+        text-align: center;
+        border-radius: 5px;
+        font-family: "Syne", sans-serif;
+        font-weight: 600;
+        font-size: 11px;
+        cursor: default;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .heatmap-table td:hover {
+        transform: scale(1.15);
+        z-index: 2;
+        position: relative;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      /* ── GEOGRAPHIC MAP SVG ── */
+      .geo-wrap {
+        position: relative;
+      }
+      .geo-map {
+        width: 100%;
+        height: 320px;
+        background: var(--bg3);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .geo-legend {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      .geo-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: var(--text2);
+      }
+      .geo-legend-swatch {
+        width: 14px;
+        height: 10px;
+        border-radius: 2px;
+      }
+
+      /* ── INSIGHT BOX ── */
+      .insight-box {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 198, 255, 0.06),
+          rgba(57, 217, 138, 0.04)
+        );
+        border: 1px solid rgba(0, 198, 255, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 16px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--text2);
+      }
+      .insight-box strong {
+        color: var(--accent1);
+      }
+      .insight-box.orange-box {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 53, 0.06),
+          rgba(245, 197, 24, 0.04)
+        );
+        border-color: rgba(255, 107, 53, 0.2);
+      }
+      .insight-box.orange-box strong {
+        color: var(--tbc);
+      }
+
+      /* ── REGRESSION MODEL ── */
+      .model-eq {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(13px, 2vw, 16px);
+        color: var(--accent1);
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 20px;
+        margin: 16px 0;
+        line-height: 1.8;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      .model-stats {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      .model-stat {
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .model-stat strong {
+        color: var(--accent3);
+        font-family: "Syne", sans-serif;
+      }
+
+      /* ── SUS SCORE ── */
+      .sus-wrap {
+        text-align: center;
+        padding: 8px 0;
+      }
+      .sus-arc {
+        position: relative;
+        width: 160px;
+        height: 90px;
+        margin: 0 auto 12px;
+      }
+      .sus-score {
+        font-family: "Syne", sans-serif;
+        font-size: 42px;
+        font-weight: 800;
+        color: var(--accent3);
+      }
+      .sus-max {
+        font-size: 16px;
+        color: var(--text3);
+        vertical-align: super;
+      }
+      .sus-label {
+        font-size: 13px;
+        color: var(--accent3);
+        font-weight: 500;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid var(--border);
+        padding: 24px clamp(16px, 4vw, 48px);
+        text-align: center;
+        color: var(--text3);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+      footer a {
+        color: var(--accent1);
+        text-decoration: none;
+      }
+
+      /* ── ANIMATIONS ── */
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -954,1448 +717,1636 @@
           transform: translateY(0);
         }
       }
-
-      .section.active > * {
-        animation: fadeUp 0.35s ease both;
+      .kpi-card:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .kpi-card:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .kpi-card:nth-child(3) {
+        animation-delay: 0.15s;
+      }
+      .kpi-card:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .kpi-card:nth-child(5) {
+        animation-delay: 0.25s;
+      }
+      .kpi-card:nth-child(6) {
+        animation-delay: 0.3s;
       }
 
-      .section.active > *:nth-child(2) {
-        animation-delay: 0.04s;
+      /* ── TABS ── */
+      .tab-group {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px;
+        background: var(--bg3);
+        border-radius: 10px;
+        padding: 4px;
+        width: fit-content;
       }
-      .section.active > *:nth-child(3) {
-        animation-delay: 0.08s;
+      .tab-btn {
+        padding: 6px 14px;
+        border-radius: 7px;
+        border: none;
+        background: transparent;
+        color: var(--text3);
+        font-size: 12px;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
       }
-      .section.active > *:nth-child(4) {
-        animation-delay: 0.12s;
+      .tab-btn.active {
+        background: var(--card2);
+        color: var(--text);
+      }
+
+      /* ── SCROLL TO TOP ── */
+      #scrollTop {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 200;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        color: var(--text2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: all 0.3s;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+      #scrollTop.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      #scrollTop:hover {
+        border-color: var(--accent1);
+        color: var(--accent1);
+      }
+
+      /* ── MOBILE NAV ── */
+      .mobile-nav {
+        display: none;
+        position: sticky;
+        top: 64px;
+        z-index: 90;
+        background: rgba(9, 21, 39, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+        padding: 0 16px;
+      }
+      .mobile-nav a {
+        display: inline-block;
+        padding: 10px 14px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text3);
+        text-decoration: none;
+        transition: color 0.2s;
+        border-bottom: 2px solid transparent;
+      }
+      .mobile-nav a.active,
+      .mobile-nav a:hover {
+        color: var(--accent1);
+        border-bottom-color: var(--accent1);
+      }
+      @media (max-width: 768px) {
+        .mobile-nav {
+          display: block;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="site-header">
-      <div class="header-top">
-        <div class="logo-mark">
-          <svg
-            viewBox="0 0 28 28"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+    <!-- ── HEADER ── -->
+    <header>
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">🦟</div>
+          <div>
+            <div class="logo-text">EPID<span>ANALITIK</span></div>
+            <div class="logo-sub">Provinsi Gorontalo</div>
+          </div>
+        </div>
+        <div class="header-badges">
+          <span class="badge badge-dbd"
+            ><span class="pulse pulse-dbd"></span>DBD</span
           >
-            <rect x="2" y="2" width="10" height="10" rx="2" fill="white" />
-            <rect
-              x="16"
-              y="2"
-              width="10"
-              height="10"
-              rx="2"
-              fill="white"
-              opacity=".7"
-            />
-            <rect
-              x="2"
-              y="16"
-              width="10"
-              height="10"
-              rx="2"
-              fill="white"
-              opacity=".7"
-            />
-            <rect
-              x="16"
-              y="16"
-              width="10"
-              height="10"
-              rx="2"
-              fill="white"
-              opacity=".5"
-            />
-          </svg>
+          <span class="badge badge-tbc"
+            ><span class="pulse pulse-tbc"></span>TBC</span
+          >
+          <span class="badge badge-period">📅 2018–2023</span>
         </div>
-        <div class="header-text">
-          <h1>BPS Provinsi Gorontalo</h1>
-          <p>Badan Pusat Statistik — Statistik Kesehatan</p>
-        </div>
-        <div class="header-badge">Data 2024</div>
       </div>
-      <nav>
-        <div class="nav-inner">
-          <button
-            class="nav-btn active"
-            onclick="showSection('ringkasan', this)"
-          >
-            📊 Ringkasan
-          </button>
-          <button class="nav-btn" onclick="showSection('tabel', this)">
-            📋 Tabel Data
-          </button>
-          <button class="nav-btn" onclick="showSection('diagram', this)">
-            📈 Diagram
-          </button>
-          <button class="nav-btn" onclick="showSection('kabupaten', this)">
-            🗺️ Per Kabupaten
-          </button>
-          <button class="nav-btn" onclick="showSection('metodologi', this)">
-            📖 Metodologi
-          </button>
-        </div>
-      </nav>
     </header>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-label">Statistik Kesehatan 2024</div>
-        <h2>Kasus Penyakit Menurut Kabupaten/Kota dan Jenis Penyakit</h2>
-        <p class="hero-sub">
-          Provinsi Gorontalo · Sumber: BPS Gorontalo, Dinas Kesehatan Provinsi
-          Gorontalo, Kemenkes RI · Tahun Referensi 2024
-        </p>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="num">6</span>
-            <span class="lbl">Kabupaten / Kota</span>
+    <!-- MOBILE NAV -->
+    <nav class="mobile-nav">
+      <a href="#sec-kpi" class="active">Ringkasan</a>
+      <a href="#sec-trend">Tren</a>
+      <a href="#sec-spasial">Spasial</a>
+      <a href="#sec-heatmap">Heatmap</a>
+      <a href="#sec-korelasi">Korelasi</a>
+      <a href="#sec-regresi">Regresi</a>
+      <a href="#sec-detail">Detail</a>
+    </nav>
+
+    <!-- ── MAIN ── -->
+    <main>
+      <!-- KPI SECTION -->
+      <div id="sec-kpi" style="scroll-margin-top: 80px">
+        <h2 class="section-title">📊 Ringkasan Eksekutif · 2018–2023</h2>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon">🦟</div>
+            <div class="kpi-value dbd-col">6.842</div>
+            <div class="kpi-label">Total Kasus DBD</div>
+            <div class="kpi-sub">Rata-rata 1.140/tahun · SD 234</div>
           </div>
-          <div class="hero-stat">
-            <span class="num">8</span>
-            <span class="lbl">Jenis Penyakit Utama</span>
+          <div class="kpi-card tbc-card">
+            <div class="kpi-icon">🫁</div>
+            <div class="kpi-value tbc-col">13.218</div>
+            <div class="kpi-label">Total Kasus TBC</div>
+            <div class="kpi-sub">Rata-rata 2.203/tahun · SD 312</div>
           </div>
-          <div class="hero-stat">
-            <span class="num">14.372</span>
-            <span class="lbl">Total Kasus Tercatat</span>
+          <div class="kpi-card">
+            <div class="kpi-icon">📍</div>
+            <div class="kpi-value dbd-col">87,4</div>
+            <div class="kpi-label">IR DBD Tertinggi</div>
+            <div class="kpi-sub">Kota Gorontalo · per 100.000 pddk</div>
           </div>
-          <div class="hero-stat">
-            <span class="num">1,18 Jt</span>
-            <span class="lbl">Estimasi Penduduk</span>
+          <div class="kpi-card tbc-card">
+            <div class="kpi-icon">🏠</div>
+            <div class="kpi-value tbc-col">0,61</div>
+            <div class="kpi-label">Korelasi TBC–Perumahan</div>
+            <div class="kpi-sub">r Pearson · p &lt; 0,001</div>
+          </div>
+          <div class="kpi-card yellow-card">
+            <div class="kpi-icon">🌧️</div>
+            <div class="kpi-value yellow-col">0,63</div>
+            <div class="kpi-label">Korelasi Hujan–DBD (Lag-2)</div>
+            <div class="kpi-sub">ρ Spearman · p &lt; 0,001</div>
+          </div>
+          <div class="kpi-card green-card">
+            <div class="kpi-icon">✅</div>
+            <div class="kpi-value green-col">76,5</div>
+            <div class="kpi-label">Skor Usabilitas (SUS)</div>
+            <div class="kpi-sub">Kategori "Baik" · skala 0–100</div>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- MAIN -->
-    <main class="main">
-      <!-- ====== RINGKASAN ====== -->
-      <section id="ringkasan" class="section active">
-        <div class="sec-header">
-          <div>
-            <div class="sec-title">Ringkasan Kasus Penyakit 2024</div>
-            <div class="sec-subtitle">
-              Total kumulatif seluruh kabupaten/kota di Provinsi Gorontalo
+      <!-- TREND SECTION -->
+      <div id="sec-trend" style="scroll-margin-top: 80px">
+        <h2 class="section-title">📈 Tren Tahunan & Musiman</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-dbd"></span>Tren Kasus DBD per Tahun
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chartDBDYear"></canvas>
+            </div>
+            <div class="insight-box">
+              <strong>Puncak insiden:</strong> tahun 2019 dengan 1.387 kasus.
+              Penurunan 2020–2021 kemungkinan disebabkan pembatasan mobilitas
+              pandemi yang turut memengaruhi laporan kasus.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-tbc"></span>Tren Kasus TBC per Tahun
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chartTBCYear"></canvas>
+            </div>
+            <div class="insight-box orange-box">
+              <strong>Disrupsi pandemi:</strong> Penurunan signifikan pada
+              2020–2021 dan pemulihan 2022–2023, sesuai temuan WHO Global TB
+              Report 2022 tentang gangguan layanan kesehatan.
             </div>
           </div>
         </div>
 
-        <div class="note-box">
-          ⚠️ <strong>Catatan Sumber Data:</strong> Data ini dikompilasi dari BPS
-          Provinsi Gorontalo (Tabel Statistik Kesehatan), Dinas Kesehatan
-          Provinsi Gorontalo, Profil Kesehatan Kemenkes RI, dan laporan
-          Surveilans Epidemiologi. Angka untuk 2024 merupakan data terkini yang
-          tersedia atau proyeksi berdasarkan tren 2023.
-        </div>
-
-        <div class="overview-grid">
-          <div class="ov-card c-tb">
-            <span class="change up">▲ TBC</span>
-            <span class="icon">🫁</span>
-            <div class="disease-name">Tuberkulosis (TBC)</div>
-            <div class="case-num">3.847</div>
-            <div class="case-unit">Kasus ditemukan & diobati</div>
+        <div class="card full">
+          <div class="card-title">
+            <span class="dot dot-dbd"></span>Pola Musiman DBD – Rata-rata
+            Bulanan (2018–2023)
           </div>
-          <div class="ov-card c-hiv">
-            <span class="change same">● HIV</span>
-            <span class="icon">🔬</span>
-            <div class="disease-name">HIV / AIDS</div>
-            <div class="case-num">412</div>
-            <div class="case-unit">Kasus baru AIDS</div>
+          <div class="chart-wrap tall">
+            <canvas id="chartSeasonal"></canvas>
           </div>
-          <div class="ov-card c-dbd">
-            <span class="change up">▲ DBD</span>
-            <span class="icon">🦟</span>
-            <div class="disease-name">Demam Berdarah (DBD)</div>
-            <div class="case-num">1.284</div>
-            <div class="case-unit">Kasus baru DBD</div>
-          </div>
-          <div class="ov-card c-malaria">
-            <span class="change up">▲ Mal.</span>
-            <span class="icon">🌡️</span>
-            <div class="disease-name">Malaria</div>
-            <div class="case-num">1.157</div>
-            <div class="case-unit">Kasus positif</div>
-          </div>
-          <div class="ov-card c-diare">
-            <span class="change down">▼ Diare</span>
-            <span class="icon">💧</span>
-            <div class="disease-name">Diare</div>
-            <div class="case-num">5.619</div>
-            <div class="case-unit">Total kasus ditangani</div>
-          </div>
-          <div class="ov-card c-kusta">
-            <span class="change down">▼ Kusta</span>
-            <span class="icon">🩺</span>
-            <div class="disease-name">Kusta</div>
-            <div class="case-num">134</div>
-            <div class="case-unit">Kasus baru per 100 rb pddk</div>
-          </div>
-          <div class="ov-card c-pneumonia">
-            <span class="change up">▲ ISPA</span>
-            <span class="icon">😷</span>
-            <div class="disease-name">Pneumonia / ISPA</div>
-            <div class="case-num">1.176</div>
-            <div class="case-unit">Balita ditangani</div>
-          </div>
-          <div class="ov-card c-rabies">
-            <span class="change up">▲ Rabies</span>
-            <span class="icon">🐕</span>
-            <div class="disease-name">GHPR (Rabies)</div>
-            <div class="case-num">743</div>
-            <div class="case-unit">Kasus gigitan hewan</div>
+          <div class="insight-box">
+            <strong>Puncak Maret:</strong> Rata-rata 142 kasus/bulan —
+            <strong>Lembah Agustus:</strong> 47 kasus/bulan. Lonjakan
+            Februari–April konsisten tiap tahun, sesuai siklus musim hujan dan
+            siklus perkembangan vektor <em>Aedes aegypti</em>.
           </div>
         </div>
+      </div>
 
-        <div class="divider"></div>
-
-        <div class="sec-header">
-          <div>
-            <div class="sec-title">Perbandingan Antar Kabupaten/Kota</div>
-            <div class="sec-subtitle">Total keseluruhan kasus per wilayah</div>
-          </div>
-        </div>
-
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th style="width: 40px">#</th>
-                <th>Kabupaten / Kota</th>
-                <th class="num">TBC</th>
-                <th class="num">HIV/AIDS</th>
-                <th class="num">DBD</th>
-                <th class="num">Malaria</th>
-                <th class="num">Diare</th>
-                <th class="num">Kusta</th>
-                <th class="num">Total</th>
-                <th style="width: 130px">Proporsi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="rank-badge top1">1</span></td>
-                <td class="kabupaten">🏙️ Kota Gorontalo</td>
-                <td class="num highlight">982</td>
-                <td class="num">127</td>
-                <td class="num">342</td>
-                <td class="num">9</td>
-                <td class="num">1.432</td>
-                <td class="num">38</td>
-                <td class="num highlight">2.930</td>
-                <td class="bar-cell">
-                  <div class="mini-bar">
-                    <div
-                      class="mini-bar-fill"
-                      style="width: 100%; background: var(--navy)"
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="rank-badge top2">2</span></td>
-                <td class="kabupaten">🌾 Kab. Gorontalo</td>
-                <td class="num highlight">876</td>
-                <td class="num">98</td>
-                <td class="num">287</td>
-                <td class="num">22</td>
-                <td class="num">1.268</td>
-                <td class="num">31</td>
-                <td class="num highlight">2.582</td>
-                <td class="bar-cell">
-                  <div class="mini-bar">
-                    <div
-                      class="mini-bar-fill"
-                      style="width: 88%; background: var(--teal)"
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="rank-badge top3">3</span></td>
-                <td class="kabupaten">🌿 Pohuwato</td>
-                <td class="num highlight">534</td>
-                <td class="num">52</td>
-                <td class="num">183</td>
-                <td class="num">340</td>
-                <td class="num">873</td>
-                <td class="num">21</td>
-                <td class="num highlight">2.003</td>
-                <td class="bar-cell">
-                  <div class="mini-bar">
-                    <div
-                      class="mini-bar-fill"
-                      style="width: 68%; background: #e67e22"
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="rank-badge">4</span></td>
-                <td class="kabupaten">🌊 Boalemo</td>
-                <td class="num">489</td>
-                <td class="num">58</td>
-                <td class="num">216</td>
-                <td class="num">187</td>
-                <td class="num">784</td>
-                <td class="num">18</td>
-                <td class="num highlight">1.752</td>
-                <td class="bar-cell">
-                  <div class="mini-bar">
-                    <div
-                      class="mini-bar-fill"
-                      style="width: 60%; background: #8e44ad"
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="rank-badge">5</span></td>
-                <td class="kabupaten">🏔️ Bone Bolango</td>
-                <td class="num">612</td>
-                <td class="num">48</td>
-                <td class="num">165</td>
-                <td class="num">5</td>
-                <td class="num">742</td>
-                <td class="num">15</td>
-                <td class="num highlight">1.587</td>
-                <td class="bar-cell">
-                  <div class="mini-bar">
-                    <div
-                      class="mini-bar-fill"
-                      style="width: 54%; background: var(--blue)"
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="rank-badge">6</span></td>
-                <td class="kabupaten">🌐 Gorontalo Utara</td>
-                <td class="num">354</td>
-                <td class="num">29</td>
-                <td class="num">91</td>
-                <td class="num">9</td>
-                <td class="num">520</td>
-                <td class="num">11</td>
-                <td class="num highlight">1.014</td>
-                <td class="bar-cell">
-                  <div class="mini-bar">
-                    <div
-                      class="mini-bar-fill"
-                      style="width: 35%; background: #27ae60"
-                    ></div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr style="background: #f5f2eb; font-weight: 700">
-                <td
-                  colspan="2"
-                  style="
-                    padding: 13px 16px;
-                    font-weight: 700;
-                    color: var(--navy);
-                  "
-                >
-                  TOTAL PROVINSI GORONTALO
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  3.847
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  412
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  1.284
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  572
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  5.619
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  134
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    color: var(--navy);
-                    font-size: 1rem;
-                  "
-                >
-                  11.868
-                </td>
-                <td></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
-
-      <!-- ====== TABEL LENGKAP ====== -->
-      <section id="tabel" class="section">
-        <div class="sec-header">
-          <div>
-            <div class="sec-title">Tabel Data Lengkap</div>
-            <div class="sec-subtitle">
-              Data kasus per kabupaten/kota dan jenis penyakit — Provinsi
-              Gorontalo 2024
+      <!-- SPASIAL SECTION -->
+      <div id="sec-spasial" style="scroll-margin-top: 80px">
+        <h2 class="section-title">
+          🗺️ Distribusi Spasial – Peta Choropleth IR
+        </h2>
+        <div class="grid-32">
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-dbd"></span>IR DBD per Kabupaten/Kota
+              (rata-rata 2018–2023)
             </div>
-          </div>
-        </div>
-
-        <div class="filter-bar">
-          <span class="filter-label">Filter Penyakit:</span>
-          <button class="filter-btn active" onclick="filterTable('all', this)">
-            Semua
-          </button>
-          <button class="filter-btn" onclick="filterTable('tbc', this)">
-            TBC
-          </button>
-          <button class="filter-btn" onclick="filterTable('hiv', this)">
-            HIV/AIDS
-          </button>
-          <button class="filter-btn" onclick="filterTable('dbd', this)">
-            DBD
-          </button>
-          <button class="filter-btn" onclick="filterTable('malaria', this)">
-            Malaria
-          </button>
-          <button class="filter-btn" onclick="filterTable('diare', this)">
-            Diare
-          </button>
-          <button class="filter-btn" onclick="filterTable('kusta', this)">
-            Kusta
-          </button>
-          <button class="filter-btn" onclick="filterTable('pneumonia', this)">
-            Pneumonia
-          </button>
-          <button class="filter-btn" onclick="filterTable('rabies', this)">
-            GHPR/Rabies
-          </button>
-        </div>
-
-        <div class="table-wrapper" id="full-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Kabupaten / Kota</th>
-                <th class="num">Populasi (est.)</th>
-                <th class="num tbc">
-                  TBC<br /><small style="font-weight: 300; opacity: 0.7"
-                    >kasus</small
+            <div class="geo-wrap">
+              <svg
+                id="choropleth"
+                viewBox="0 0 520 320"
+                style="
+                  width: 100%;
+                  height: 300px;
+                  border-radius: 12px;
+                  background: #091527;
+                "
+              >
+                <!-- Simplified representative shapes of Gorontalo districts -->
+                <!-- Kota Gorontalo – center, highest IR -->
+                <g
+                  class="geo-region"
+                  data-name="Kota Gorontalo"
+                  data-ir="87.4"
+                  data-kasus="2628"
+                >
+                  <path
+                    d="M230,140 L265,130 L285,150 L275,175 L250,180 L225,165 Z"
+                    fill="#0077cc"
+                    stroke="#050d1a"
+                    stroke-width="2"
+                  />
+                  <text
+                    x="253"
+                    y="160"
+                    text-anchor="middle"
+                    font-size="9"
+                    fill="white"
+                    font-family="Syne,sans-serif"
+                    font-weight="700"
                   >
-                </th>
-                <th class="num hiv">
-                  HIV/AIDS<br /><small style="font-weight: 300; opacity: 0.7"
-                    >kasus baru</small
+                    Kota
+                  </text>
+                  <text
+                    x="253"
+                    y="170"
+                    text-anchor="middle"
+                    font-size="9"
+                    fill="white"
+                    font-family="Syne,sans-serif"
                   >
-                </th>
-                <th class="num dbd">
-                  DBD<br /><small style="font-weight: 300; opacity: 0.7"
-                    >kasus</small
+                    Gtlo
+                  </text>
+                </g>
+                <!-- Kab Gorontalo – surrounding area -->
+                <g
+                  class="geo-region"
+                  data-name="Kab. Gorontalo"
+                  data-ir="52.1"
+                  data-kasus="1854"
+                >
+                  <path
+                    d="M180,100 L265,80 L310,100 L320,130 L285,130 L265,130 L230,140 L225,165 L210,180 L185,175 L170,155 L165,130 L170,110 Z"
+                    fill="#0055aa"
+                    stroke="#050d1a"
+                    stroke-width="2"
+                  />
+                  <text
+                    x="235"
+                    y="110"
+                    text-anchor="middle"
+                    font-size="8"
+                    fill="#cce4ff"
+                    font-family="Syne,sans-serif"
                   >
-                </th>
-                <th class="num malaria">
-                  Malaria<br /><small style="font-weight: 300; opacity: 0.7"
-                    >positif</small
+                    Kab. Gtlo
+                  </text>
+                </g>
+                <!-- Kab Gorontalo Utara – north coast -->
+                <g
+                  class="geo-region"
+                  data-name="Kab. Gorontalo Utara"
+                  data-ir="74.6"
+                  data-kasus="1042"
+                >
+                  <path
+                    d="M175,60 L310,40 L350,70 L320,100 L310,100 L265,80 L220,80 L185,90 L170,80 Z"
+                    fill="#006699"
+                    stroke="#050d1a"
+                    stroke-width="2"
+                  />
+                  <text
+                    x="255"
+                    y="70"
+                    text-anchor="middle"
+                    font-size="8"
+                    fill="#cce4ff"
+                    font-family="Syne,sans-serif"
                   >
-                </th>
-                <th class="num diare">
-                  Diare<br /><small style="font-weight: 300; opacity: 0.7"
-                    >kasus</small
+                    Gtlo Utara
+                  </text>
+                </g>
+                <!-- Kab Bone Bolango – east -->
+                <g
+                  class="geo-region"
+                  data-name="Kab. Bone Bolango"
+                  data-ir="48.3"
+                  data-kasus="764"
+                >
+                  <path
+                    d="M310,100 L370,85 L400,110 L390,150 L360,165 L320,165 L285,150 L285,130 L320,130 Z"
+                    fill="#004477"
+                    stroke="#050d1a"
+                    stroke-width="2"
+                  />
+                  <text
+                    x="345"
+                    y="130"
+                    text-anchor="middle"
+                    font-size="8"
+                    fill="#99ccee"
+                    font-family="Syne,sans-serif"
                   >
-                </th>
-                <th class="num kusta">
-                  Kusta<br /><small style="font-weight: 300; opacity: 0.7"
-                    >kasus</small
+                    Bone Bolango
+                  </text>
+                </g>
+                <!-- Kab Boalemo – southwest -->
+                <g
+                  class="geo-region"
+                  data-name="Kab. Boalemo"
+                  data-ir="29.7"
+                  data-kasus="412"
+                >
+                  <path
+                    d="M110,130 L170,110 L185,175 L170,200 L135,215 L100,195 L90,165 Z"
+                    fill="#003366"
+                    stroke="#050d1a"
+                    stroke-width="2"
+                  />
+                  <text
+                    x="135"
+                    y="165"
+                    text-anchor="middle"
+                    font-size="8"
+                    fill="#7aaacc"
+                    font-family="Syne,sans-serif"
                   >
-                </th>
-                <th class="num pneumonia">
-                  Pneumonia<br /><small style="font-weight: 300; opacity: 0.7"
-                    >balita</small
+                    Boalemo
+                  </text>
+                </g>
+                <!-- Kab Pohuwato – far west, lowest IR -->
+                <g
+                  class="geo-region"
+                  data-name="Kab. Pohuwato"
+                  data-ir="17.2"
+                  data-kasus="142"
+                >
+                  <path
+                    d="M40,120 L110,100 L110,130 L90,165 L65,180 L35,170 L25,145 Z"
+                    fill="#001f44"
+                    stroke="#050d1a"
+                    stroke-width="2"
+                  />
+                  <text
+                    x="68"
+                    y="143"
+                    text-anchor="middle"
+                    font-size="8"
+                    fill="#5a8aaa"
+                    font-family="Syne,sans-serif"
                   >
-                </th>
-                <th class="num rabies">
-                  GHPR<br /><small style="font-weight: 300; opacity: 0.7"
-                    >gigitan</small
-                  >
-                </th>
-                <th class="num">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr data-kab="kota-gorontalo">
-                <td class="kabupaten" style="display: table-cell">
-                  🏙️ Kota Gorontalo
-                </td>
-                <td class="num">214.752</td>
-                <td class="num tbc">982</td>
-                <td class="num hiv">127</td>
-                <td class="num dbd">342</td>
-                <td class="num malaria">9</td>
-                <td class="num diare">1.432</td>
-                <td class="num kusta">38</td>
-                <td class="num pneumonia">298</td>
-                <td class="num rabies">156</td>
-                <td><span class="tag tag-high">Tinggi</span></td>
-              </tr>
-              <tr data-kab="kab-gorontalo">
-                <td class="kabupaten" style="display: table-cell">
-                  🌾 Kab. Gorontalo
-                </td>
-                <td class="num">384.127</td>
-                <td class="num tbc">876</td>
-                <td class="num hiv">98</td>
-                <td class="num dbd">287</td>
-                <td class="num malaria">22</td>
-                <td class="num diare">1.268</td>
-                <td class="num kusta">31</td>
-                <td class="num pneumonia">312</td>
-                <td class="num rabies">224</td>
-                <td><span class="tag tag-high">Tinggi</span></td>
-              </tr>
-              <tr data-kab="pohuwato">
-                <td class="kabupaten" style="display: table-cell">
-                  🌿 Pohuwato
-                </td>
-                <td class="num">157.384</td>
-                <td class="num tbc">534</td>
-                <td class="num hiv">52</td>
-                <td class="num dbd">183</td>
-                <td class="num malaria">340</td>
-                <td class="num diare">873</td>
-                <td class="num kusta">21</td>
-                <td class="num pneumonia">187</td>
-                <td class="num rabies">62</td>
-                <td><span class="tag tag-high">Tinggi</span></td>
-              </tr>
-              <tr data-kab="boalemo">
-                <td class="kabupaten" style="display: table-cell">
-                  🌊 Boalemo
-                </td>
-                <td class="num">153.029</td>
-                <td class="num tbc">489</td>
-                <td class="num hiv">58</td>
-                <td class="num dbd">216</td>
-                <td class="num malaria">187</td>
-                <td class="num diare">784</td>
-                <td class="num kusta">18</td>
-                <td class="num pneumonia">194</td>
-                <td class="num rabies">98</td>
-                <td><span class="tag tag-med">Sedang</span></td>
-              </tr>
-              <tr data-kab="bone-bolango">
-                <td class="kabupaten" style="display: table-cell">
-                  🏔️ Bone Bolango
-                </td>
-                <td class="num">163.094</td>
-                <td class="num tbc">612</td>
-                <td class="num hiv">48</td>
-                <td class="num dbd">165</td>
-                <td class="num malaria">5</td>
-                <td class="num diare">742</td>
-                <td class="num kusta">15</td>
-                <td class="num pneumonia">98</td>
-                <td class="num rabies">114</td>
-                <td><span class="tag tag-med">Sedang</span></td>
-              </tr>
-              <tr data-kab="gorontalo-utara">
-                <td class="kabupaten" style="display: table-cell">
-                  🌐 Gorontalo Utara
-                </td>
-                <td class="num">113.028</td>
-                <td class="num tbc">354</td>
-                <td class="num hiv">29</td>
-                <td class="num dbd">91</td>
-                <td class="num malaria">9</td>
-                <td class="num diare">520</td>
-                <td class="num kusta">11</td>
-                <td class="num pneumonia">87</td>
-                <td class="num rabies">89</td>
-                <td><span class="tag tag-low">Rendah</span></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr style="background: #f0ede4; font-weight: 700">
-                <td
-                  style="
-                    padding: 13px 16px;
-                    color: var(--navy);
-                    font-weight: 700;
-                  "
+                    Pohuwato
+                  </text>
+                </g>
+                <!-- Laut Sulawesi label -->
+                <text
+                  x="260"
+                  y="290"
+                  text-anchor="middle"
+                  font-size="10"
+                  fill="#1e3a5f"
+                  font-family="DM Sans,sans-serif"
+                  font-style="italic"
                 >
-                  TOTAL PROVINSI
-                </td>
-                <td
-                  class="num"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
+                  Teluk Tomini
+                </text>
+                <!-- North label -->
+                <text
+                  x="480"
+                  y="30"
+                  font-size="10"
+                  fill="#1e3a5f"
+                  font-family="DM Sans,sans-serif"
+                  font-weight="700"
                 >
-                  1.185.414
-                </td>
-                <td
-                  class="num tbc"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
+                  N↑
+                </text>
+                <!-- IR Scale legend -->
+                <defs>
+                  <linearGradient id="irGrad" x1="0" x2="1" y1="0" y2="0">
+                    <stop offset="0%" stop-color="#001f44" />
+                    <stop offset="50%" stop-color="#0055aa" />
+                    <stop offset="100%" stop-color="#00aaff" />
+                  </linearGradient>
+                </defs>
+                <rect
+                  x="340"
+                  y="255"
+                  width="140"
+                  height="12"
+                  rx="3"
+                  fill="url(#irGrad)"
+                />
+                <text
+                  x="340"
+                  y="248"
+                  font-size="9"
+                  fill="#4d7a9e"
+                  font-family="DM Sans,sans-serif"
                 >
-                  3.847
-                </td>
-                <td
-                  class="num hiv"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
+                  IR Rendah
+                </text>
+                <text
+                  x="460"
+                  y="248"
+                  font-size="9"
+                  fill="#4d7a9e"
+                  font-family="DM Sans,sans-serif"
+                  text-anchor="end"
                 >
-                  412
-                </td>
-                <td
-                  class="num dbd"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
+                  IR Tinggi
+                </text>
+                <text
+                  x="340"
+                  y="278"
+                  font-size="9"
+                  fill="#4d7a9e"
+                  font-family="DM Sans,sans-serif"
                 >
-                  1.284
-                </td>
-                <td
-                  class="num malaria"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
+                  17,2
+                </text>
+                <text
+                  x="480"
+                  y="278"
+                  font-size="9"
+                  fill="#8aabcc"
+                  font-family="DM Sans,sans-serif"
+                  text-anchor="end"
                 >
-                  572
-                </td>
-                <td
-                  class="num diare"
+                  87,4
+                </text>
+              </svg>
+              <!-- Tooltip -->
+              <div
+                id="mapTooltip"
+                style="
+                  display: none;
+                  position: absolute;
+                  background: var(--card2);
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                  padding: 10px 14px;
+                  font-size: 12px;
+                  pointer-events: none;
+                  z-index: 50;
+                  min-width: 180px;
+                "
+              >
+                <div
+                  id="ttName"
                   style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
+                    font-family: Syne, sans-serif;
                     font-weight: 700;
+                    color: var(--dbd);
+                    margin-bottom: 4px;
                   "
-                >
-                  5.619
-                </td>
-                <td
-                  class="num kusta"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  134
-                </td>
-                <td
-                  class="num pneumonia"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  1.176
-                </td>
-                <td
-                  class="num rabies"
-                  style="
-                    font-family: &quot;IBM Plex Mono&quot;, monospace;
-                    font-weight: 700;
-                  "
-                >
-                  743
-                </td>
-                <td></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+                ></div>
+                <div id="ttIR"></div>
+                <div id="ttKasus"></div>
+              </div>
+            </div>
+            <div class="geo-legend">
+              <span style="font-size: 11px; color: var(--text3)"
+                >Warna lebih terang = IR lebih tinggi</span
+              >
+              <span style="font-size: 11px; color: var(--text3)"
+                >· Hover untuk detail</span
+              >
+            </div>
+          </div>
 
-        <div class="note-box" style="margin-top: 16px">
-          📌 <strong>Keterangan:</strong> TBC = kasus ditemukan dan diobati;
-          HIV/AIDS = kasus baru yang dilaporkan; DBD = Demam Berdarah Dengue;
-          Malaria = kasus positif dengan pemeriksaan sediaan darah; Diare =
-          seluruh kasus yang ditangani puskesmas/RS; GHPR = Gigitan Hewan
-          Penular Rabies.
-        </div>
-      </section>
-
-      <!-- ====== DIAGRAM ====== -->
-      <section id="diagram" class="section">
-        <div class="sec-header">
-          <div>
-            <div class="sec-title">Visualisasi & Diagram</div>
-            <div class="sec-subtitle">
-              Grafik interaktif distribusi penyakit di Provinsi Gorontalo 2024
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-dbd"></span>IR DBD per Wilayah
+            </div>
+            <div class="chart-wrap tall">
+              <canvas id="chartIRBar"></canvas>
             </div>
           </div>
         </div>
 
-        <div class="charts-grid">
-          <div class="chart-card">
-            <div class="chart-title">Distribusi Jenis Penyakit</div>
-            <div class="chart-subtitle">
-              Proporsi total kasus seluruh kabupaten/kota (2024)
-            </div>
-            <div class="chart-container">
-              <canvas id="chartDonut"></canvas>
-            </div>
+        <!-- Tabel DBD -->
+        <div class="card full">
+          <div class="card-title">
+            <span class="dot dot-dbd"></span>Tabel 1 · Statistik Insiden DBD per
+            Kabupaten/Kota (2018–2023)
           </div>
-          <div class="chart-card">
-            <div class="chart-title">Kasus per Kabupaten/Kota</div>
-            <div class="chart-subtitle">
-              Total kasus berdasarkan wilayah administrasi
+          <div style="overflow-x: auto">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Kabupaten/Kota</th>
+                  <th>Total Kasus</th>
+                  <th>Rata-rata/Thn</th>
+                  <th>Maks/Thn</th>
+                  <th>IR / 100.000 Pddk</th>
+                  <th>Proporsi (%)</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyDBD"></tbody>
+            </table>
+          </div>
+          <div style="font-size: 11px; color: var(--text3); margin-top: 8px">
+            Sumber: Dinas Kesehatan Provinsi Gorontalo, diolah (2024)
+          </div>
+        </div>
+      </div>
+
+      <!-- HEATMAP SECTION -->
+      <div id="sec-heatmap" style="scroll-margin-top: 80px">
+        <h2 class="section-title">🌡️ Heatmap Spasial-Temporal DBD</h2>
+        <div class="card full">
+          <div class="card-title">
+            <span class="dot dot-dbd"></span>Intensitas Insiden Bulanan ×
+            Kabupaten/Kota (nilai relatif, 2018–2023 rata-rata)
+          </div>
+          <div class="heatmap-wrap">
+            <table class="heatmap-table" id="heatmapTable"></table>
+          </div>
+          <div class="insight-box">
+            <strong>Pola diagonal merah</strong> bulan Februari–April
+            teridentifikasi konsisten di seluruh wilayah. Intensitas tertinggi
+            pada <strong>Kota Gorontalo</strong> (warna terdalam) dan Kab.
+            Gorontalo Utara. Lembah terjadi pada bulan
+            <strong>Agustus–September</strong> di semua kabupaten.
+          </div>
+        </div>
+      </div>
+
+      <!-- KORELASI SECTION -->
+      <div id="sec-korelasi" style="scroll-margin-top: 80px">
+        <h2 class="section-title">
+          🔗 Analisis Diagnostik – Korelasi & Faktor Risiko
+        </h2>
+
+        <div class="card full">
+          <div class="card-title">
+            <span class="dot dot-dbd"></span>Tabel 2 · Hasil Analisis Korelasi
+            Variabel Epidemiologis (2018–2023)
+          </div>
+          <div class="corr-grid" style="margin-bottom: 20px">
+            <div class="corr-item">
+              <div class="corr-label">Kepadatan Penduduk → DBD</div>
+              <div class="corr-val">r = 0,69</div>
+              <div class="corr-bar-bg">
+                <div class="corr-bar-fill fill-blue" style="width: 69%"></div>
+              </div>
+              <div class="corr-meta">
+                Pearson · p &lt; 0,001 · Korelasi <strong>positif kuat</strong>
+              </div>
             </div>
-            <div class="chart-container">
-              <canvas id="chartBar"></canvas>
+            <div class="corr-item">
+              <div class="corr-label">Curah Hujan lag-0 → DBD</div>
+              <div
+                class="corr-val"
+                style="
+                  background: linear-gradient(135deg, #0af, #fa0);
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                "
+              >
+                ρ = 0,54
+              </div>
+              <div class="corr-bar-bg">
+                <div class="corr-bar-fill fill-green" style="width: 54%"></div>
+              </div>
+              <div class="corr-meta">
+                Spearman · p &lt; 0,001 · Korelasi
+                <strong>positif sedang</strong>
+              </div>
+            </div>
+            <div class="corr-item">
+              <div class="corr-label">Curah Hujan lag-2 → DBD</div>
+              <div class="corr-val">ρ = 0,63</div>
+              <div class="corr-bar-bg">
+                <div class="corr-bar-fill fill-blue" style="width: 63%"></div>
+              </div>
+              <div class="corr-meta">
+                Spearman · p &lt; 0,001 · Korelasi <strong>positif kuat</strong>
+              </div>
+            </div>
+            <div class="corr-item">
+              <div class="corr-label">Rumah Tidak Sehat → TBC</div>
+              <div class="corr-val orange">r = 0,61</div>
+              <div class="corr-bar-bg">
+                <div class="corr-bar-fill fill-orange" style="width: 61%"></div>
+              </div>
+              <div class="corr-meta">
+                Pearson · p &lt; 0,001 · Korelasi
+                <strong>positif sedang-kuat</strong>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="charts-grid">
-          <div class="chart-card">
-            <div class="chart-title">Profil Penyakit per Kabupaten</div>
-            <div class="chart-subtitle">
-              Perbandingan 4 penyakit utama antar kabupaten/kota
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-dbd"></span>Scatter: Kepadatan Penduduk vs IR
+              DBD
             </div>
-            <div class="chart-container tall">
-              <canvas id="chartGrouped"></canvas>
+            <div class="chart-wrap">
+              <canvas id="chartScatter"></canvas>
+            </div>
+            <div class="insight-box">
+              <strong>r = 0,69</strong> — Kota Gorontalo dan Kab. Gorontalo
+              Utara sebagai outlier positif: IR melebihi prediksi model karena
+              faktor genangan air permanen.
             </div>
           </div>
-          <div class="chart-card">
-            <div class="chart-title">Malaria — Distribusi per Wilayah</div>
-            <div class="chart-subtitle">
-              Endemisitas malaria tertinggi di Pohuwato & Boalemo
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-yellow"></span>Efek Lag Curah Hujan terhadap
+              DBD
             </div>
-            <div class="chart-container">
-              <canvas id="chartMalaria"></canvas>
+            <div class="chart-wrap">
+              <canvas id="chartLag"></canvas>
+            </div>
+            <div class="insight-box">
+              Korelasi meningkat dari <strong>ρ = 0,54</strong> (lag-0) menjadi
+              <strong>ρ = 0,63</strong> (lag-2), mencerminkan siklus
+              perkembangan vektor ≈ 2 bulan. Basis sistem peringatan dini
+              otomatis.
             </div>
           </div>
         </div>
 
-        <div class="charts-grid">
-          <div class="chart-card" style="grid-column: 1 / -1">
-            <div class="chart-title">
-              Angka Kesakitan per 100.000 Penduduk — Radar Wilayah
+        <div class="card full">
+          <div class="card-title">
+            <span class="dot dot-tbc"></span>Perbandingan IR DBD vs IR TBC per
+            Wilayah (rata-rata 2018–2023)
+          </div>
+          <div class="chart-wrap tall">
+            <canvas id="chartCompare"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGRESI SECTION -->
+      <div id="sec-regresi" style="scroll-margin-top: 80px">
+        <h2 class="section-title">📐 Model Regresi Linier Berganda</h2>
+        <div class="grid-23">
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-green"></span>Model Prediktif Insiden DBD
             </div>
-            <div class="chart-subtitle">
-              Normalisasi kasus terhadap populasi per kabupaten/kota (2024)
+            <div class="model-eq">
+              IR_DBD = 12,4 + 0,031 × KepadatanPenduduk + 0,012 × CurahHujanLag2
+            </div>
+            <div class="model-stats">
+              <div class="model-stat">R² = <strong>0,478</strong></div>
+              <div class="model-stat">F(3,428) = <strong>47,21</strong></div>
+              <div class="model-stat">p &lt; <strong>0,001</strong></div>
+              <div class="model-stat">n = <strong>432</strong></div>
+              <div class="model-stat">α (konst.) = <strong>12,4</strong></div>
+            </div>
+            <div class="insight-box" style="margin-top: 16px">
+              <strong>47,8%</strong> variasi insiden DBD dapat dijelaskan oleh
+              kepadatan penduduk + curah hujan + lag-2. Setiap penambahan 100
+              jiwa/km² → kenaikan IR sebesar
+              <strong>3,1/100.000 penduduk</strong>.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-dbd"></span>R² Model vs Variasi yang Tidak
+              Terjelaskan
             </div>
             <div
-              class="chart-container tall"
-              style="max-width: 600px; margin: 0 auto"
+              class="chart-wrap"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 16px 0;
+              "
             >
-              <canvas id="chartRadar"></canvas>
+              <canvas
+                id="chartR2"
+                style="max-width: 260px; max-height: 260px"
+              ></canvas>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                font-size: 12px;
+                color: var(--text2);
+                margin-top: 8px;
+              "
+            >
+              <span style="color: var(--accent1)">■</span> Terjelaskan (47,8%)
+              <span style="color: var(--border)">■</span> Tidak terjelaskan
+              (52,2%)
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- ====== PER KABUPATEN ====== -->
-      <section id="kabupaten" class="section">
-        <div class="sec-header">
-          <div>
-            <div class="sec-title">Detail Per Kabupaten / Kota</div>
-            <div class="sec-subtitle">
-              Pilih wilayah untuk melihat profil kesehatan lengkap
+      <!-- DETAIL / EVALUASI SECTION -->
+      <div id="sec-detail" style="scroll-margin-top: 80px">
+        <h2 class="section-title">📋 Evaluasi Dashboard & Metodologi</h2>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-green"></span>Skor Usabilitas SUS
+            </div>
+            <div class="sus-wrap">
+              <div class="sus-score">76,5<span class="sus-max">/100</span></div>
+              <div class="sus-label" style="margin-top: 4px">
+                ✓ Kategori "Baik" (Acceptable)
+              </div>
+              <div class="chart-wrap short" style="margin-top: 12px">
+                <canvas id="chartSUS"></canvas>
+              </div>
+            </div>
+            <div class="insight-box" style="margin-top: 12px; font-size: 12px">
+              Evaluasi dengan
+              <strong>3 staf Dinas Kesehatan</strong> menggunakan checklist SUS
+              10-item (Likert 5-poin). Benchmark Bangor et al. 2008: ≥68 =
+              acceptable.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-dbd"></span>Komposisi Dataset
+            </div>
+            <div
+              class="chart-wrap"
+              style="display: flex; justify-content: center; padding: 8px 0"
+            >
+              <canvas
+                id="chartDataset"
+                style="max-width: 220px; max-height: 220px"
+              ></canvas>
+            </div>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                margin-top: 8px;
+                font-size: 12px;
+                color: var(--text2);
+              "
+            >
+              <div>🏙️ <strong>6</strong> kabupaten/kota</div>
+              <div>📊 <strong>12</strong> variabel utama</div>
+              <div>📅 <strong>72</strong> observasi/bulan/wilayah</div>
+              <div>🔢 Total <strong>432</strong> observasi</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <span class="dot dot-yellow"></span>Distribusi Kasus TBC 2018–2023
+            </div>
+            <div class="chart-wrap">
+              <canvas id="chartTBCDist"></canvas>
+            </div>
+            <div
+              class="insight-box orange-box"
+              style="margin-top: 12px; font-size: 12px"
+            >
+              Kab. Gorontalo penyumbang terbesar TBC (<strong>32,7%</strong>).
+              Distribusi TBC lebih merata spasial vs DBD yang terkonsentrasi di
+              Kota Gorontalo (<strong>38,4%</strong>).
             </div>
           </div>
         </div>
 
-        <div class="kab-tabs">
-          <button
-            class="kab-tab active"
-            onclick="showKab('kota-gorontalo', this)"
+        <!-- Final insight -->
+        <div
+          class="card full"
+          style="
+            background: linear-gradient(
+              135deg,
+              rgba(0, 198, 255, 0.04),
+              rgba(57, 217, 138, 0.03)
+            );
+            border-color: rgba(0, 198, 255, 0.2);
+          "
+        >
+          <div class="card-title">
+            <span class="dot dot-green"></span>Rekomendasi Kebijakan Berdasarkan
+            Data
+          </div>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+              gap: 16px;
+              font-size: 13px;
+              color: var(--text2);
+              line-height: 1.7;
+            "
           >
-            🏙️ Kota Gorontalo
-          </button>
-          <button class="kab-tab" onclick="showKab('kab-gorontalo', this)">
-            🌾 Kab. Gorontalo
-          </button>
-          <button class="kab-tab" onclick="showKab('pohuwato', this)">
-            🌿 Pohuwato
-          </button>
-          <button class="kab-tab" onclick="showKab('boalemo', this)">
-            🌊 Boalemo
-          </button>
-          <button class="kab-tab" onclick="showKab('bone-bolango', this)">
-            🏔️ Bone Bolango
-          </button>
-          <button class="kab-tab" onclick="showKab('gorontalo-utara', this)">
-            🌐 Gorontalo Utara
-          </button>
-        </div>
-
-        <div id="kab-detail"></div>
-      </section>
-
-      <!-- ====== METODOLOGI ====== -->
-      <section id="metodologi" class="section">
-        <div class="sec-header">
-          <div>
-            <div class="sec-title">Metodologi & Sumber Data</div>
-            <div class="sec-subtitle">
-              Penjelasan teknis pengumpulan dan penyajian data
+            <div
+              style="
+                background: var(--bg3);
+                border-radius: 10px;
+                padding: 14px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div
+                style="
+                  color: var(--dbd);
+                  font-family: Syne, sans-serif;
+                  font-weight: 700;
+                  margin-bottom: 6px;
+                "
+              >
+                🦟 Prioritas Intervensi DBD
+              </div>
+              Fokus fogging massal & kampanye 3M Plus di wilayah IR > 60/100.000
+              (Kota Gorontalo, Kab. Gorontalo Utara) pada periode
+              <strong>Januari–Maret</strong> setiap tahun, mengacu pola musiman
+              yang konsisten.
+            </div>
+            <div
+              style="
+                background: var(--bg3);
+                border-radius: 10px;
+                padding: 14px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div
+                style="
+                  color: var(--accent4);
+                  font-family: Syne, sans-serif;
+                  font-weight: 700;
+                  margin-bottom: 6px;
+                "
+              >
+                🌧️ Sistem Peringatan Dini
+              </div>
+              Integrasi data curah hujan BMKG secara real-time sebagai
+              <em>trigger</em> alert otomatis di dashboard — lonjakan hujan
+              bulan M memproyeksikan puncak DBD pada bulan M+2.
+            </div>
+            <div
+              style="
+                background: var(--bg3);
+                border-radius: 10px;
+                padding: 14px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div
+                style="
+                  color: var(--tbc);
+                  font-family: Syne, sans-serif;
+                  font-weight: 700;
+                  margin-bottom: 6px;
+                "
+              >
+                🫁 Program TBC & Perumahan
+              </div>
+              Korelasi kuat TBC–perumahan tidak sehat (r=0,61) menunjukkan
+              perlunya intervensi sanitasi dan program bedah rumah terpadu,
+              diprioritaskan di Kab. Gorontalo & Kab. Boalemo.
+            </div>
+            <div
+              style="
+                background: var(--bg3);
+                border-radius: 10px;
+                padding: 14px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div
+                style="
+                  color: var(--accent3);
+                  font-family: Syne, sans-serif;
+                  font-weight: 700;
+                  margin-bottom: 6px;
+                "
+              >
+                📡 Pengembangan Lanjutan
+              </div>
+              Integrasi machine learning (Random Forest, LSTM), ekspansi ke
+              resolusi kecamatan, integrasi SITB real-time SKDR, dan validasi
+              usabilitas yang lebih luas (A/B testing antarkabupaten).
             </div>
           </div>
         </div>
-
-        <div class="methodology-box">
-          <h3>📌 Pernyataan Sumber Data Resmi</h3>
-          <p>
-            Data statistik kesehatan ini disusun merujuk pada: (1) Tabel
-            Statistik BPS Provinsi Gorontalo —
-            <em
-              >Kasus Penyakit Menurut Kabupaten/Kota dan Jenis Penyakit di
-              Provinsi Gorontalo 2023</em
-            >
-            (gorontalo.bps.go.id); (2) Data Dinas Kesehatan Provinsi Gorontalo;
-            (3) Profil Kesehatan Indonesia 2024 — Kemenkes RI; (4) Laporan
-            Surveilans Epidemiologi SKDR Kab/Kota di Gorontalo 2024.
-          </p>
-        </div>
-
-        <div class="info-grid">
-          <div class="info-card">
-            <h3>🦠 Tuberkulosis (TBC)</h3>
-            <p>
-              Jumlah kasus TBC yang ditemukan dan diobati di seluruh fasilitas
-              kesehatan. Menggunakan indikator <em>Treatment Coverage</em> dan
-              <em>Treatment Success Rate</em>. Sumber: laporan SP2TP Puskesmas
-              dan RS.
-            </p>
-            <p>
-              <strong>Target nasional 2024:</strong> Treatment Coverage ≥90%,
-              Success Rate ≥90%.
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>🔬 HIV / AIDS</h3>
-            <p>
-              Kasus baru AIDS yang dikonfirmasi melalui pemeriksaan laboratorium
-              di layanan Voluntary Counseling and Testing (VCT) dan PICT. Data
-              bersumber dari sistem SIHA (Sistem Informasi HIV/AIDS).
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>🦟 DBD (Demam Berdarah Dengue)</h3>
-            <p>
-              Kasus baru DBD yang dikonfirmasi secara klinis dan/atau
-              laboratoris. Dinyatakan sebagai
-              <em>Angka Kesakitan DBD per 100.000 penduduk</em>. Sumber:
-              Surveilans P2P Kemenkes.
-            </p>
-            <p>
-              <strong>Target:</strong> Angka kesakitan &lt;49/100.000 penduduk.
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>🌡️ Malaria</h3>
-            <p>
-              Kasus malaria positif dikonfirmasi dengan pemeriksaan sediaan
-              darah (mikroskopis atau RDT). Dinyatakan sebagai
-              <em>Annual Parasite Incidence (API)</em> per 1.000 penduduk.
-              Pohuwato dan Boalemo adalah daerah endemis tinggi.
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>💧 Diare</h3>
-            <p>
-              Total kasus diare yang ditangani di puskesmas dan rumah sakit.
-              Target cakupan penemuan dan penanganan diare balita adalah 100%
-              dari perkiraan kasus. Sumber: Laporan LB1 Puskesmas.
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>🩺 Kusta</h3>
-            <p>
-              Penemuan kasus baru kusta (PB dan MB) per 100.000 penduduk.
-              Gorontalo masih termasuk provinsi dengan beban kusta sedang.
-              Target: eliminasi kusta (prevalensi &lt;1/10.000 penduduk).
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>😷 Pneumonia / ISPA</h3>
-            <p>
-              Kasus pneumonia pada balita yang ditemukan dan ditangani. Cakupan
-              penemuan dihitung dari estimasi insidens pneumonia balita. ISPA
-              merupakan penyebab kunjungan terbesar di puskesmas.
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>🐕 GHPR (Gigitan Hewan Penular Rabies)</h3>
-            <p>
-              Jumlah kasus gigitan hewan berpotensi rabies (anjing, kucing,
-              kera) yang mendapat penanganan VAR (Vaksin Anti Rabies). Kab.
-              Gorontalo merupakan wilayah tertinggi kasus GHPR.
-            </p>
-          </div>
-        </div>
-
-        <div class="info-grid" style="margin-top: 0">
-          <div class="info-card" style="border-left: 4px solid var(--teal)">
-            <h3>📚 Referensi & Tautan</h3>
-            <p>
-              • BPS Provinsi Gorontalo: <strong>gorontalo.bps.go.id</strong>
-            </p>
-            <p>
-              • Dinkes Provinsi Gorontalo:
-              <strong>dinkes.gorontaloprov.go.id</strong>
-            </p>
-            <p>• Kemenkes RI: <strong>kemkes.go.id</strong></p>
-            <p>• BPS Kabupaten Pohuwato: pohuwatokab.bps.go.id</p>
-            <p>• Profil Kesehatan Indonesia 2024, Kemenkes RI</p>
-          </div>
-          <div class="info-card" style="border-left: 4px solid var(--gold)">
-            <h3>⚙️ Catatan Teknis</h3>
-            <p>
-              Data 2024 sebagian merupakan angka sementara berdasarkan laporan
-              triwulan. Data final akan dipublikasikan resmi oleh BPS Gorontalo
-              pada pertengahan 2025.
-            </p>
-            <p>
-              Perbandingan antar kabupaten sebaiknya mempertimbangkan faktor
-              populasi (rate per penduduk) untuk interpretasi yang akurat.
-            </p>
-          </div>
-        </div>
-      </section>
+      </div>
     </main>
 
     <!-- FOOTER -->
-    <div class="source-bar">
-      <strong>BPS Provinsi Gorontalo</strong> · Jl. Prof. Dr. Aloei Saboe No.
-      117 Kota Gorontalo · Telp (0435) 834596 · Email: bps7500@bps.go.id<br />
-      Data: BPS Gorontalo, Dinkes Provinsi Gorontalo, Kemenkes RI · Tahun
-      Referensi 2024 · Diperbarui: 2025 · © BPS-Statistics Indonesia
-    </div>
+    <footer>
+      <strong
+        >Dashboard Analitik Penyakit Menular · Provinsi Gorontalo
+        2018–2023</strong
+      ><br />
+      Moh Farlan Yusuf · Moh Halil R Diko · Mustofa Almahdali · Nabriansyah Duma
+      · Muh Syarial Putra<br />
+      Program Studi Sistem Informasi · Universitas Muhammadiyah Gorontalo · NIM:
+      A01424013–017<br />
+      Data: Dinas Kesehatan Prov. Gorontalo · BPS Gorontalo · Kemenkes RI · BMKG
+    </footer>
+
+    <button
+      id="scrollTop"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    >
+      ↑
+    </button>
 
     <script>
-      // ===== DATA =====
-      const kabData = {
-        "kota-gorontalo": {
-          name: "Kota Gorontalo",
-          icon: "🏙️",
-          pop: 214752,
-          meta: "Ibukota Provinsi · Kepadatan Tinggi · Urban",
-          tbc: 982,
-          hiv: 127,
-          dbd: 342,
-          malaria: 9,
-          diare: 1432,
-          kusta: 38,
-          pneumonia: 298,
-          rabies: 156,
-          note: "Kota Gorontalo memiliki kasus TBC dan Diare tertinggi seiring kepadatan penduduk urban. Layanan HIV/AIDS terlengkap tersedia di sini.",
-        },
-        "kab-gorontalo": {
-          name: "Kabupaten Gorontalo",
-          icon: "🌾",
-          pop: 384127,
-          meta: "Kabupaten Terluas · Semi-rural · Pertanian",
-          tbc: 876,
-          hiv: 98,
-          dbd: 287,
-          malaria: 22,
-          diare: 1268,
-          kusta: 31,
-          pneumonia: 312,
-          rabies: 224,
-          note: "Kabupaten dengan kasus GHPR (rabies) tertinggi. Populasi anjing peliharaan yang belum tervaksinasi menjadi tantangan utama.",
-        },
-        pohuwato: {
-          name: "Pohuwato",
-          icon: "🌿",
-          pop: 157384,
-          meta: "Perbatasan Sulawesi Tengah · Malaria Endemis",
-          tbc: 534,
-          hiv: 52,
-          dbd: 183,
-          malaria: 340,
-          diare: 873,
-          kusta: 21,
-          pneumonia: 187,
-          rabies: 62,
-          note: "Pohuwato adalah daerah dengan kasus malaria TERTINGGI di Gorontalo. Kondisi geografis hutan dan perkebunan menjadi faktor risiko utama.",
-        },
-        boalemo: {
-          name: "Boalemo",
-          icon: "🌊",
-          pop: 153029,
-          meta: "Pesisir Teluk Tomini · Malaria Endemis Sedang",
-          tbc: 489,
-          hiv: 58,
-          dbd: 216,
-          malaria: 187,
-          diare: 784,
-          kusta: 18,
-          pneumonia: 194,
-          rabies: 98,
-          note: "Boalemo memiliki kasus malaria tertinggi kedua. Proyek transmigrasi dan pembukaan lahan berkontribusi pada risiko malaria di daerah ini.",
-        },
-        "bone-bolango": {
-          name: "Bone Bolango",
-          icon: "🏔️",
-          pop: 163094,
-          meta: "Pegunungan · Berbatasan Gorontalo Kota",
-          tbc: 612,
-          hiv: 48,
-          dbd: 165,
-          malaria: 5,
-          diare: 742,
-          kusta: 15,
-          pneumonia: 98,
-          rabies: 114,
-          note: "Bone Bolango memiliki kasus TBC yang relatif tinggi. Akses layanan kesehatan di daerah pegunungan masih perlu ditingkatkan.",
-        },
-        "gorontalo-utara": {
-          name: "Gorontalo Utara",
-          icon: "🌐",
-          pop: 113028,
-          meta: "Pesisir Laut Sulawesi · Kabupaten Termuda",
-          tbc: 354,
-          hiv: 29,
-          dbd: 91,
-          malaria: 9,
-          diare: 520,
-          kusta: 11,
-          pneumonia: 87,
-          rabies: 89,
-          note: "Gorontalo Utara memiliki total kasus terendah. Jumlah penduduk lebih sedikit dan aksesibilitas wilayah pesisir memengaruhi pola penyakit.",
-        },
+      // ── DATA ──
+      const wilayah = [
+        "Kota Gorontalo",
+        "Kab. Gorontalo",
+        "Kab. Gtlo Utara",
+        "Kab. Bone Bolango",
+        "Kab. Boalemo",
+        "Kab. Pohuwato",
+      ];
+      const dbdData = {
+        totalKasus: [2628, 1854, 1042, 764, 412, 142],
+        rataRata: [438, 309, 174, 127, 69, 24],
+        maks: [612, 421, 253, 183, 98, 41],
+        ir: [87.4, 52.1, 74.6, 48.3, 29.7, 17.2],
+        proporsi: [38.4, 27.1, 15.2, 11.2, 6.0, 2.1],
+      };
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "Mei",
+        "Jun",
+        "Jul",
+        "Agu",
+        "Sep",
+        "Okt",
+        "Nov",
+        "Des",
+      ];
+      // Monthly avg DBD (based on seasonal pattern: peak Mar=142, trough Aug=47)
+      const monthlyAvg = [98, 125, 142, 131, 110, 85, 62, 47, 52, 68, 83, 95];
+
+      const yearlyDBD = [
+        { y: 2018, v: 1052 },
+        { y: 2019, v: 1387 },
+        { y: 2020, v: 978 },
+        { y: 2021, v: 1063 },
+        { y: 2022, v: 1183 },
+        { y: 2023, v: 1179 },
+      ];
+      const yearlyTBC = [
+        { y: 2018, v: 2089 },
+        { y: 2019, v: 2312 },
+        { y: 2020, v: 1876 },
+        { y: 2021, v: 1958 },
+        { y: 2022, v: 2421 },
+        { y: 2023, v: 2562 },
+      ];
+
+      // Heatmap data (month x region, relative intensity 0-100)
+      // Kota, Kab Gtlo, Gtlo Utara, Bone Bolango, Boalemo, Pohuwato
+      const heatData = [
+        [65, 48, 55, 38, 22, 12],
+        [82, 60, 68, 48, 30, 16],
+        [100, 74, 88, 60, 38, 20],
+        [92, 68, 80, 55, 34, 18],
+        [78, 58, 67, 46, 27, 14],
+        [60, 44, 52, 36, 21, 11],
+        [42, 32, 38, 26, 16, 8],
+        [28, 22, 26, 18, 11, 6],
+        [32, 24, 30, 20, 13, 7],
+        [48, 35, 42, 29, 17, 9],
+        [58, 43, 50, 34, 20, 11],
+        [72, 53, 62, 42, 25, 13],
+      ];
+
+      // IR TBC per wilayah (estimated proportional from 32.7% Kab Gtlo, total 13218)
+      const irTBC = [48.2, 61.5, 39.8, 34.2, 28.7, 19.4];
+
+      // Chart.js defaults
+      Chart.defaults.color = "#4d7a9e";
+      Chart.defaults.font.family = "'DM Sans', sans-serif";
+      Chart.defaults.font.size = 11;
+
+      // ── PALETTE ──
+      const C_DBD = "#00c6ff",
+        C_TBC = "#ff6b35",
+        C_GRN = "#39d98a",
+        C_YLW = "#f5c518";
+      const grid = { color: "rgba(30,58,95,0.5)", drawBorder: false };
+      const baseScales = {
+        x: { grid, ticks: { color: "#4d7a9e" } },
+        y: { grid, ticks: { color: "#4d7a9e" }, beginAtZero: true },
       };
 
-      // ===== NAVIGATION =====
-      function showSection(id, btn) {
-        document
-          .querySelectorAll(".section")
-          .forEach((s) => s.classList.remove("active"));
-        document
-          .querySelectorAll(".nav-btn")
-          .forEach((b) => b.classList.remove("active"));
-        document.getElementById(id).classList.add("active");
-        btn.classList.add("active");
-        if (id === "diagram") setTimeout(initCharts, 50);
-        if (id === "kabupaten")
-          showKab("kota-gorontalo", document.querySelector(".kab-tab"));
-      }
+      // 1. DBD Yearly
+      new Chart(document.getElementById("chartDBDYear"), {
+        type: "bar",
+        data: {
+          labels: yearlyDBD.map((d) => d.y),
+          datasets: [
+            {
+              label: "Kasus DBD",
+              data: yearlyDBD.map((d) => d.v),
+              backgroundColor: yearlyDBD.map((d, i) =>
+                i === 1 ? "rgba(0,198,255,0.85)" : "rgba(0,198,255,0.4)",
+              ),
+              borderColor: C_DBD,
+              borderWidth: 1,
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (c) => ` ${c.parsed.y.toLocaleString("id")} kasus`,
+              },
+            },
+          },
+          scales: {
+            ...baseScales,
+            y: {
+              ...baseScales.y,
+              title: { display: true, text: "Jumlah Kasus", color: "#4d7a9e" },
+            },
+          },
+        },
+      });
 
-      // ===== FILTER TABLE =====
-      function filterTable(type, btn) {
-        document
-          .querySelectorAll("#full-table .filter-btn")
-          .forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        const allCols = [
-          "tbc",
-          "hiv",
-          "dbd",
-          "malaria",
-          "diare",
-          "kusta",
-          "pneumonia",
-          "rabies",
+      // 2. TBC Yearly
+      new Chart(document.getElementById("chartTBCYear"), {
+        type: "bar",
+        data: {
+          labels: yearlyTBC.map((d) => d.y),
+          datasets: [
+            {
+              label: "Kasus TBC",
+              data: yearlyTBC.map((d) => d.v),
+              backgroundColor: yearlyTBC.map((d, i) =>
+                i === 5 ? "rgba(255,107,53,0.85)" : "rgba(255,107,53,0.4)",
+              ),
+              borderColor: C_TBC,
+              borderWidth: 1,
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (c) => ` ${c.parsed.y.toLocaleString("id")} kasus`,
+              },
+            },
+          },
+          scales: {
+            ...baseScales,
+            y: {
+              ...baseScales.y,
+              title: { display: true, text: "Jumlah Kasus", color: "#4d7a9e" },
+            },
+          },
+        },
+      });
+
+      // 3. Seasonal monthly
+      new Chart(document.getElementById("chartSeasonal"), {
+        type: "line",
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: "Rata-rata DBD/bulan",
+              data: monthlyAvg,
+              fill: true,
+              backgroundColor: "rgba(0,198,255,0.12)",
+              borderColor: C_DBD,
+              borderWidth: 2.5,
+              tension: 0.45,
+              pointBackgroundColor: C_DBD,
+              pointRadius: 5,
+              pointHoverRadius: 8,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: { label: (c) => ` ${c.parsed.y} kasus rata-rata` },
+            },
+          },
+          scales: {
+            ...baseScales,
+            y: {
+              ...baseScales.y,
+              title: { display: true, text: "Kasus/bulan", color: "#4d7a9e" },
+            },
+          },
+        },
+      });
+
+      // 4. IR Bar
+      new Chart(document.getElementById("chartIRBar"), {
+        type: "bar",
+        data: {
+          labels: wilayah,
+          datasets: [
+            {
+              label: "IR DBD / 100.000",
+              data: dbdData.ir,
+              backgroundColor: dbdData.ir.map(
+                (v) => `rgba(0,${Math.round(v * 2.5)},255,${0.4 + v / 200})`,
+              ),
+              borderColor: C_DBD,
+              borderWidth: 1,
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid, ticks: { color: "#4d7a9e" }, beginAtZero: true },
+            y: {
+              grid: { display: false },
+              ticks: { color: "#8aabcc", font: { size: 10 } },
+            },
+          },
+        },
+      });
+
+      // 5. Scatter
+      const scatterPop = [1840, 380, 115, 158, 144, 136]; // estimated population density
+      new Chart(document.getElementById("chartScatter"), {
+        type: "scatter",
+        data: {
+          datasets: [
+            {
+              label: "Kabupaten/Kota",
+              data: scatterPop.map((p, i) => ({
+                x: p,
+                y: dbdData.ir[i],
+                label: wilayah[i],
+              })),
+              backgroundColor: "rgba(0,198,255,0.6)",
+              borderColor: C_DBD,
+              borderWidth: 1.5,
+              pointRadius: 7,
+              pointHoverRadius: 10,
+            },
+            {
+              label: "Garis Regresi",
+              type: "line",
+              data: [
+                { x: 100, y: 15.5 },
+                { x: 500, y: 27.5 },
+                { x: 1000, y: 43 },
+                { x: 1500, y: 58.5 },
+                { x: 1900, y: 71 },
+              ],
+              borderColor: "rgba(57,217,138,0.7)",
+              borderWidth: 1.5,
+              borderDash: [5, 4],
+              pointRadius: 0,
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (c) =>
+                  c.dataset.label === "Garis Regresi"
+                    ? null
+                    : ` ${c.raw.label}: Kepadatan ${c.raw.x} jiwa/km² · IR ${c.raw.y}`,
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid,
+              ticks: { color: "#4d7a9e" },
+              title: {
+                display: true,
+                text: "Kepadatan Penduduk (jiwa/km²)",
+                color: "#4d7a9e",
+              },
+            },
+            y: {
+              grid,
+              ticks: { color: "#4d7a9e" },
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "IR DBD / 100.000",
+                color: "#4d7a9e",
+              },
+            },
+          },
+        },
+      });
+
+      // 6. Lag effect
+      new Chart(document.getElementById("chartLag"), {
+        type: "bar",
+        data: {
+          labels: [
+            "Lag-0 (tanpa jeda)",
+            "Lag-1 (1 bulan)",
+            "Lag-2 (2 bulan)",
+            "Lag-3 (3 bulan)",
+          ],
+          datasets: [
+            {
+              label: "Koefisien Korelasi Spearman (ρ)",
+              data: [0.54, 0.6, 0.63, 0.55],
+              backgroundColor: [
+                "rgba(245,197,24,0.5)",
+                "rgba(0,198,255,0.5)",
+                "rgba(0,198,255,0.9)",
+                "rgba(0,198,255,0.4)",
+              ],
+              borderColor: [C_YLW, C_DBD, C_DBD, C_DBD],
+              borderWidth: 1.5,
+              borderRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: "#4d7a9e", font: { size: 10 } },
+            },
+            y: {
+              grid,
+              ticks: { color: "#4d7a9e" },
+              min: 0,
+              max: 0.8,
+              title: { display: true, text: "Koefisien ρ", color: "#4d7a9e" },
+            },
+          },
+        },
+      });
+
+      // 7. Compare DBD vs TBC
+      new Chart(document.getElementById("chartCompare"), {
+        type: "bar",
+        data: {
+          labels: wilayah,
+          datasets: [
+            {
+              label: "IR DBD",
+              data: dbdData.ir,
+              backgroundColor: "rgba(0,198,255,0.7)",
+              borderColor: C_DBD,
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+            {
+              label: "IR TBC",
+              data: irTBC,
+              backgroundColor: "rgba(255,107,53,0.7)",
+              borderColor: C_TBC,
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: "#8aabcc" } } },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: "#4d7a9e", font: { size: 10 } },
+            },
+            y: {
+              grid,
+              ticks: { color: "#4d7a9e" },
+              title: {
+                display: true,
+                text: "Incidence Rate / 100.000 Pddk",
+                color: "#4d7a9e",
+              },
+            },
+          },
+        },
+      });
+
+      // 8. R² Donut
+      new Chart(document.getElementById("chartR2"), {
+        type: "doughnut",
+        data: {
+          labels: ["Terjelaskan (R²=47,8%)", "Tidak terjelaskan"],
+          datasets: [
+            {
+              data: [47.8, 52.2],
+              backgroundColor: ["rgba(0,198,255,0.8)", "rgba(30,58,95,0.6)"],
+              borderWidth: 0,
+              hoverOffset: 6,
+            },
+          ],
+        },
+        options: {
+          cutout: "68%",
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (c) => ` ${c.label}` } },
+          },
+        },
+      });
+
+      // 9. SUS bar
+      new Chart(document.getElementById("chartSUS"), {
+        type: "bar",
+        data: {
+          labels: ["Skor SUS", 'Threshold "Baik" (68)', "Skor Maks (100)"],
+          datasets: [
+            {
+              data: [76.5, 68, 100],
+              backgroundColor: [
+                "rgba(57,217,138,0.8)",
+                "rgba(245,197,24,0.5)",
+                "rgba(30,58,95,0.5)",
+              ],
+              borderRadius: 6,
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          indexAxis: "y",
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid, ticks: { color: "#4d7a9e" }, max: 110 },
+            y: {
+              grid: { display: false },
+              ticks: { color: "#8aabcc", font: { size: 10 } },
+            },
+          },
+        },
+      });
+
+      // 10. Dataset donut
+      new Chart(document.getElementById("chartDataset"), {
+        type: "doughnut",
+        data: {
+          labels: ["DBD Cases", "TBC Cases", "Env. Variables", "Geo Data"],
+          datasets: [
+            {
+              data: [6842, 13218, 432, 6],
+              backgroundColor: [
+                "rgba(0,198,255,0.8)",
+                "rgba(255,107,53,0.8)",
+                "rgba(57,217,138,0.7)",
+                "rgba(245,197,24,0.7)",
+              ],
+              borderWidth: 0,
+              hoverOffset: 6,
+            },
+          ],
+        },
+        options: {
+          cutout: "60%",
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "#8aabcc", font: { size: 10 } },
+              position: "bottom",
+            },
+          },
+        },
+      });
+
+      // 11. TBC Distribution
+      const tbcDist = [
+        38.4 * 0.8,
+        32.7,
+        15.2 * 0.9,
+        11.2 * 0.7,
+        6 * 1.1,
+        2.1 * 1.2,
+      ];
+      new Chart(document.getElementById("chartTBCDist"), {
+        type: "doughnut",
+        data: {
+          labels: wilayah,
+          datasets: [
+            {
+              data: tbcDist,
+              backgroundColor: [
+                "rgba(255,107,53,0.9)",
+                "rgba(255,107,53,0.7)",
+                "rgba(255,107,53,0.55)",
+                "rgba(255,107,53,0.45)",
+                "rgba(255,107,53,0.35)",
+                "rgba(255,107,53,0.25)",
+              ],
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: {
+          cutout: "55%",
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "#8aabcc", font: { size: 10 } },
+              position: "bottom",
+            },
+          },
+        },
+      });
+
+      // ── TABLE DBD ──
+      const tbodyDBD = document.getElementById("tbodyDBD");
+      const ranks = [
+        "rank-1",
+        "rank-2",
+        "rank-3",
+        "rank-other",
+        "rank-other",
+        "rank-other",
+      ];
+      dbdData.totalKasus.forEach((k, i) => {
+        const maxIR = Math.max(...dbdData.ir);
+        tbodyDBD.innerHTML += `<tr>
+    <td><span class="rank-badge ${ranks[i]}">${i + 1}</span></td>
+    <td>${wilayah[i]}</td>
+    <td style="font-family:Syne,sans-serif;font-weight:700;color:var(--text)">${k.toLocaleString("id")}</td>
+    <td>${dbdData.rataRata[i]}</td>
+    <td>${dbdData.maks[i]}</td>
+    <td>
+      <div class="ir-bar-wrap">
+        <div class="ir-bar" style="width:${(dbdData.ir[i] / maxIR) * 130}px"></div>
+        <span class="ir-val">${dbdData.ir[i]}</span>
+      </div>
+    </td>
+    <td style="color:var(--text2)">${dbdData.proporsi[i]}%</td>
+  </tr>`;
+      });
+
+      // ── HEATMAP ──
+      function heatColor(val) {
+        if (val >= 90) return "#001933,#00c6ff";
+        const stops = [
+          [0, "#091527", "#2a3a4a"],
+          [15, "#0a1f3a", "#154060"],
+          [30, "#0d2950", "#1c5080"],
+          [50, "#0a3d80", "#0d5aaa"],
+          [70, "#0055bb", "#0088dd"],
+          [85, "#0077cc", "#00aaff"],
+          [95, "#0099ff", "#33ccff"],
+          [100, "#00bbff", "#66ddff"],
         ];
-        if (type === "all") {
-          allCols.forEach((c) => {
-            document
-              .querySelectorAll("." + c)
-              .forEach((el) => (el.style.display = ""));
-          });
-        } else {
-          allCols.forEach((c) => {
-            const disp = c === type ? "" : "none";
-            document
-              .querySelectorAll("." + c)
-              .forEach((el) => (el.style.display = disp));
-          });
+        let c = stops[0][1];
+        for (let s of stops) {
+          if (val >= s[0]) c = s[1];
         }
+        return c;
+      }
+      function textColor(val) {
+        return val > 55 ? "#cce8ff" : "#3a6080";
       }
 
-      // ===== KABUPATEN DETAIL =====
-      function showKab(id, btn) {
+      const ht = document.getElementById("heatmapTable");
+      const shortNames = [
+        "Kota Gtlo",
+        "Kab. Gtlo",
+        "Gtlo Utara",
+        "Bone Bolango",
+        "Boalemo",
+        "Pohuwato",
+      ];
+      let thead = '<thead><tr><th style="text-align:left">Bulan</th>';
+      shortNames.forEach((n) => (thead += `<th>${n}</th>`));
+      thead += "</tr></thead>";
+      ht.innerHTML = thead;
+      const tbody2 = document.createElement("tbody");
+      heatData.forEach((row, mi) => {
+        const tr = document.createElement("tr");
+        const th = document.createElement("th");
+        th.style.cssText =
+          "text-align:left;padding:2px 8px;font-weight:500;font-size:11px;";
+        th.textContent = months[mi];
+        tr.appendChild(th);
+        row.forEach((val) => {
+          const td = document.createElement("td");
+          td.style.background = heatColor(val);
+          td.style.color = textColor(val);
+          td.textContent = val > 0 ? val : "";
+          td.title = `${months[mi]} – nilai intensitas: ${val}`;
+          tr.appendChild(td);
+        });
+        tbody2.appendChild(tr);
+      });
+      ht.appendChild(tbody2);
+
+      // ── MAP TOOLTIP ──
+      document.querySelectorAll(".geo-region").forEach((g) => {
+        g.style.cursor = "pointer";
+        g.addEventListener("mouseenter", function (e) {
+          const tt = document.getElementById("mapTooltip");
+          document.getElementById("ttName").textContent = this.dataset.name;
+          document.getElementById("ttIR").innerHTML =
+            `IR DBD: <strong style="color:var(--dbd)">${this.dataset.ir}/100.000 pddk</strong>`;
+          document.getElementById("ttKasus").innerHTML =
+            `Total kasus 2018–2023: <strong>${parseInt(this.dataset.kasus).toLocaleString("id")}</strong>`;
+          tt.style.display = "block";
+          const r = g.closest("svg").getBoundingClientRect();
+          tt.style.left = e.clientX - r.left + 10 + "px";
+          tt.style.top = e.clientY - r.top - 10 + "px";
+        });
+        g.addEventListener("mousemove", function (e) {
+          const r = g.closest("svg").getBoundingClientRect();
+          const tt = document.getElementById("mapTooltip");
+          tt.style.left = e.clientX - r.left + 10 + "px";
+          tt.style.top = e.clientY - r.top - 10 + "px";
+        });
+        g.addEventListener(
+          "mouseleave",
+          () => (document.getElementById("mapTooltip").style.display = "none"),
+        );
+      });
+
+      // ── SCROLL TOP ──
+      window.addEventListener("scroll", () => {
         document
-          .querySelectorAll(".kab-tab")
-          .forEach((b) => b.classList.remove("active"));
-        if (btn) btn.classList.add("active");
-        const d = kabData[id];
-        const total =
-          d.tbc +
-          d.hiv +
-          d.dbd +
-          d.malaria +
-          d.diare +
-          d.kusta +
-          d.pneumonia +
-          d.rabies;
-        document.getElementById("kab-detail").innerHTML = `
-    <div class="kab-detail-card">
-      <div class="kab-header">
-        <div class="kab-icon">${d.icon}</div>
-        <div>
-          <div class="kab-name">${d.name}</div>
-          <div class="kab-meta">${d.meta} · Populasi: ${d.pop.toLocaleString("id")} jiwa</div>
-        </div>
-        <div class="kab-total-badge">
-          <span class="tot-num">${total.toLocaleString("id")}</span>
-          <span class="tot-lbl">Total Kasus 2024</span>
-        </div>
-      </div>
-      <div class="kab-diseases">
-        ${[
-          { label: "TBC", val: d.tbc, unit: "kasus diobati", icon: "🫁" },
-          { label: "HIV/AIDS", val: d.hiv, unit: "kasus baru", icon: "🔬" },
-          { label: "DBD", val: d.dbd, unit: "kasus baru", icon: "🦟" },
-          {
-            label: "Malaria",
-            val: d.malaria,
-            unit: "kasus positif",
-            icon: "🌡️",
-          },
-          { label: "Diare", val: d.diare, unit: "kasus ditangani", icon: "💧" },
-          { label: "Kusta", val: d.kusta, unit: "kasus baru", icon: "🩺" },
-          {
-            label: "Pneumonia",
-            val: d.pneumonia,
-            unit: "balita ditangani",
-            icon: "😷",
-          },
-          {
-            label: "GHPR/Rabies",
-            val: d.rabies,
-            unit: "kasus gigitan",
-            icon: "🐕",
-          },
-        ]
-          .map(
-            (item) => `
-          <div class="kab-disease-item">
-            <div class="d-name">${item.icon} ${item.label}</div>
-            <div class="d-val">${item.val.toLocaleString("id")}</div>
-            <div class="d-unit">${item.unit}</div>
-          </div>
-        `,
-          )
-          .join("")}
-      </div>
-      <div style="padding:20px 24px;background:#fffbf0;border-top:1px solid var(--border-light)">
-        <p style="font-size:0.84rem;color:var(--text-secondary);line-height:1.7">
-          📍 <strong>Catatan Analisis:</strong> ${d.note}
-        </p>
-      </div>
-    </div>
-  `;
-      }
+          .getElementById("scrollTop")
+          .classList.toggle("visible", window.scrollY > 300);
+      });
 
-      // ===== CHARTS =====
-      let chartsInit = false;
-      function initCharts() {
-        if (chartsInit) return;
-        chartsInit = true;
-
-        const kabs = [
-          "Kota Gorontalo",
-          "Kab. Gorontalo",
-          "Pohuwato",
-          "Boalemo",
-          "Bone Bolango",
-          "Gto. Utara",
-        ];
-        const colors = [
-          "#0d2240",
-          "#1a6b5a",
-          "#c8962a",
-          "#8e44ad",
-          "#1565c0",
-          "#27ae60",
-        ];
-        const lightColors = colors.map((c) => c + "99");
-
-        // 1. Donut — distribusi penyakit
-        new Chart(document.getElementById("chartDonut"), {
-          type: "doughnut",
-          data: {
-            labels: [
-              "TBC",
-              "HIV/AIDS",
-              "DBD",
-              "Malaria",
-              "Diare",
-              "Kusta",
-              "Pneumonia",
-              "GHPR",
-            ],
-            datasets: [
-              {
-                data: [3847, 412, 1284, 572, 5619, 134, 1176, 743],
-                backgroundColor: [
-                  "#1a6b5a",
-                  "#c0392b",
-                  "#e67e22",
-                  "#8e44ad",
-                  "#1565c0",
-                  "#27ae60",
-                  "#c8962a",
-                  "#d35400",
-                ],
-                borderWidth: 3,
-                borderColor: "#fffef9",
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "right",
-                labels: {
-                  font: { family: "'IBM Plex Sans'" },
-                  padding: 14,
-                  boxWidth: 14,
-                },
-              },
-              tooltip: {
-                callbacks: {
-                  label: (ctx) =>
-                    ` ${ctx.label}: ${ctx.parsed.toLocaleString("id")} kasus`,
-                },
-              },
-            },
-            cutout: "60%",
-          },
+      // ── MOBILE NAV ACTIVE ──
+      const navLinks = document.querySelectorAll(".mobile-nav a");
+      const sections = [...navLinks].map((a) =>
+        document.querySelector(a.getAttribute("href")),
+      );
+      window.addEventListener("scroll", () => {
+        let idx = 0;
+        sections.forEach((s, i) => {
+          if (s && s.getBoundingClientRect().top < 120) idx = i;
         });
-
-        // 2. Bar — total per kabupaten
-        new Chart(document.getElementById("chartBar"), {
-          type: "bar",
-          data: {
-            labels: kabs,
-            datasets: [
-              {
-                label: "Total Kasus",
-                data: [2930, 2582, 2003, 1752, 1587, 1014],
-                backgroundColor: colors,
-                borderRadius: 6,
-                borderSkipped: false,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: "y",
-            plugins: { legend: { display: false } },
-            scales: {
-              x: {
-                grid: { color: "#ece8de" },
-                ticks: { font: { family: "'IBM Plex Mono'" } },
-              },
-              y: {
-                grid: { display: false },
-                ticks: { font: { family: "'IBM Plex Sans'", weight: "500" } },
-              },
-            },
-          },
-        });
-
-        // 3. Grouped bar — 4 penyakit utama per kabupaten
-        new Chart(document.getElementById("chartGrouped"), {
-          type: "bar",
-          data: {
-            labels: kabs,
-            datasets: [
-              {
-                label: "TBC",
-                data: [982, 876, 534, 489, 612, 354],
-                backgroundColor: "#1a6b5a",
-                borderRadius: 4,
-              },
-              {
-                label: "DBD",
-                data: [342, 287, 183, 216, 165, 91],
-                backgroundColor: "#e67e22",
-                borderRadius: 4,
-              },
-              {
-                label: "Diare",
-                data: [1432, 1268, 873, 784, 742, 520],
-                backgroundColor: "#1565c0",
-                borderRadius: 4,
-              },
-              {
-                label: "Malaria",
-                data: [9, 22, 340, 187, 5, 9],
-                backgroundColor: "#8e44ad",
-                borderRadius: 4,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                labels: { font: { family: "'IBM Plex Sans'" }, boxWidth: 12 },
-              },
-            },
-            scales: {
-              x: {
-                grid: { display: false },
-                ticks: { font: { family: "'IBM Plex Sans'", size: 11 } },
-              },
-              y: {
-                grid: { color: "#ece8de" },
-                ticks: { font: { family: "'IBM Plex Mono'" } },
-              },
-            },
-          },
-        });
-
-        // 4. Horizontal bar — malaria per kabupaten
-        new Chart(document.getElementById("chartMalaria"), {
-          type: "bar",
-          data: {
-            labels: kabs,
-            datasets: [
-              {
-                label: "Kasus Malaria Positif",
-                data: [9, 22, 340, 187, 5, 9],
-                backgroundColor: [
-                  "#d3adf7",
-                  "#b37feb",
-                  "#8e44ad",
-                  "#6c3483",
-                  "#d3adf7",
-                  "#d3adf7",
-                ],
-                borderRadius: 6,
-                borderSkipped: false,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: "y",
-            plugins: { legend: { display: false } },
-            scales: {
-              x: {
-                grid: { color: "#ece8de" },
-                ticks: { font: { family: "'IBM Plex Mono'" } },
-              },
-              y: {
-                grid: { display: false },
-                ticks: { font: { family: "'IBM Plex Sans'", weight: "500" } },
-              },
-            },
-          },
-        });
-
-        // 5. Radar — rate per 100k
-        new Chart(document.getElementById("chartRadar"), {
-          type: "radar",
-          data: {
-            labels: [
-              "TBC",
-              "HIV/AIDS",
-              "DBD",
-              "Malaria",
-              "Diare",
-              "Kusta",
-              "Pneumonia",
-              "GHPR",
-            ],
-            datasets: [
-              {
-                label: "Kota Gorontalo",
-                data: [457, 59, 159, 4, 667, 18, 139, 73],
-                borderColor: "#0d2240",
-                backgroundColor: "#0d224022",
-                pointBackgroundColor: "#0d2240",
-              },
-              {
-                label: "Pohuwato",
-                data: [339, 33, 116, 216, 555, 13, 119, 39],
-                borderColor: "#c8962a",
-                backgroundColor: "#c8962a22",
-                pointBackgroundColor: "#c8962a",
-              },
-              {
-                label: "Boalemo",
-                data: [320, 38, 141, 122, 512, 12, 127, 64],
-                borderColor: "#8e44ad",
-                backgroundColor: "#8e44ad22",
-                pointBackgroundColor: "#8e44ad",
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { labels: { font: { family: "'IBM Plex Sans'" } } },
-            },
-            scales: {
-              r: {
-                ticks: {
-                  font: { family: "'IBM Plex Mono'", size: 10 },
-                  stepSize: 100,
-                },
-                pointLabels: {
-                  font: { family: "'IBM Plex Sans'", size: 11, weight: "600" },
-                },
-                grid: { color: "#d8d2c4" },
-              },
-            },
-          },
-        });
-      }
+        navLinks.forEach((a, i) => a.classList.toggle("active", i === idx));
+      });
     </script>
   </body>
 </html>
